@@ -200,8 +200,14 @@
     if (typeof method !== 'function') return
     const target = nativeEvent.currentTarget || nativeEvent.target
     const source = nativeEvent.target
-    const touches = nativeEvent.touches ? [...nativeEvent.touches].map(touch => ({ x: touch.clientX, y: touch.clientY, clientX: touch.clientX, clientY: touch.clientY, pageX: touch.pageX, pageY: touch.pageY })) : undefined
-    const changedTouches = nativeEvent.changedTouches ? [...nativeEvent.changedTouches].map(touch => ({ x: touch.clientX, y: touch.clientY, clientX: touch.clientX, clientY: touch.clientY, pageX: touch.pageX, pageY: touch.pageY })) : undefined
+    const canvasRect = target instanceof HTMLCanvasElement ? target.getBoundingClientRect() : null
+    const mapTouch = touch => {
+      const clientX = canvasRect ? touch.clientX - canvasRect.left : touch.clientX
+      const clientY = canvasRect ? touch.clientY - canvasRect.top : touch.clientY
+      return { x: clientX, y: clientY, clientX, clientY, pageX: touch.pageX, pageY: touch.pageY }
+    }
+    const touches = nativeEvent.touches ? [...nativeEvent.touches].map(mapTouch) : undefined
+    const changedTouches = nativeEvent.changedTouches ? [...nativeEvent.changedTouches].map(mapTouch) : undefined
     const detail = nativeEvent.detail && typeof nativeEvent.detail === 'object' ? { ...nativeEvent.detail } : {}
     if (source && 'value' in source) detail.value = source.value
     if (source instanceof HTMLMediaElement) {
@@ -223,6 +229,57 @@
     if (typeof value !== 'string') return value
     const source = value.startsWith('/assets/') ? value.slice(1) : value
     return source.replace(/^assets\/icons\/([\w-]+)\.png$/, 'assets/ui-icons/$1.svg')
+  }
+  function bindCanvasPointers(page, entry) {
+    const handlers = entry.route === 'pages/video/index'
+      ? ['onGameTS', 'onGameTM', 'onGameTE']
+      : /^pages\/game-(papercut|ball|parking)\/index$/.test(entry.route)
+        ? ['onTouchStart', 'onTouchMove', 'onTouchEnd']
+        : null
+    if (!handlers) return () => {}
+    const root = document.querySelector(`.wx-page[data-entry="${entry.key}"]`)
+    if (!root) return () => {}
+    let activePointer = null
+    let activeCanvas = null
+    function forward(handler, event) {
+      const point = { clientX: event.clientX, clientY: event.clientY, pageX: event.pageX, pageY: event.pageY }
+      dispatch(page, handler, {
+        type: event.type,
+        target: activeCanvas,
+        currentTarget: activeCanvas,
+        touches: [point],
+        changedTouches: [point],
+        preventDefault: () => event.preventDefault(),
+        stopPropagation: () => event.stopPropagation()
+      })
+    }
+    function onPointerDown(event) {
+      if (!(event.target instanceof HTMLCanvasElement) || event.target.id === 'exportCanvas') return
+      if (event.pointerType === 'touch' || event.button !== 0) return
+      activePointer = event.pointerId
+      activeCanvas = event.target
+      activeCanvas.setPointerCapture?.(event.pointerId)
+      forward(handlers[0], event)
+    }
+    function onPointerMove(event) {
+      if (event.pointerId === activePointer) forward(handlers[1], event)
+    }
+    function onPointerEnd(event) {
+      if (event.pointerId !== activePointer) return
+      forward(handlers[2], event)
+      activePointer = null
+      activeCanvas = null
+    }
+    root.addEventListener('pointerdown', onPointerDown)
+    root.addEventListener('pointermove', onPointerMove)
+    root.addEventListener('pointerup', onPointerEnd)
+    root.addEventListener('pointercancel', onPointerEnd)
+    return () => {
+      root.removeEventListener('pointerdown', onPointerDown)
+      root.removeEventListener('pointermove', onPointerMove)
+      root.removeEventListener('pointerup', onPointerEnd)
+      root.removeEventListener('pointercancel', onPointerEnd)
+    }
   }
   function createPageComponent(entry) {
     const config = pageConfigs[entry.route]
@@ -247,10 +304,14 @@
         }
         pageInstances.set(entry.key, page)
         page.onLoad?.(entry.options)
-        onMounted(() => nextTick(() => page.onReady?.()))
+        let removeCanvasPointers
+        onMounted(() => nextTick(() => {
+          page.onReady?.()
+          removeCanvasPointers = bindCanvasPointers(page, entry)
+        }))
         onActivated(() => page.onShow?.())
         onDeactivated(() => page.onHide?.())
-        onBeforeUnmount(() => { if (pageInstances.has(entry.key)) { page.onUnload?.(); pageInstances.delete(entry.key) } })
+        onBeforeUnmount(() => { removeCanvasPointers?.(); if (pageInstances.has(entry.key)) { page.onUnload?.(); pageInstances.delete(entry.key) } })
         return { ...toRefs(data), wxDispatch: (name, event) => dispatch(page, name, event), wxAsset: asset }
       }
     }
@@ -268,6 +329,15 @@
       let startX = 0
       let startY = 0
       let lastWheel = 0
+      let touchEligible = false
+      let pointerEligible = false
+      function canSwipe(event) {
+        if (!props.vertical) return true
+        const slide = event.target instanceof Element ? event.target.closest('.wx-swiper-slide') : null
+        const content = slide?.querySelector('.content-area')
+        const clientY = event.touches?.[0]?.clientY ?? event.changedTouches?.[0]?.clientY ?? event.clientY
+        return !!content && Number.isFinite(clientY) && clientY >= content.getBoundingClientRect().bottom
+      }
       function move(next) {
         const children = flatChildren(slots.default?.() || [])
         const index = Number(props.current) + next
@@ -282,12 +352,27 @@
         return h('div', {
           ...attrs,
           class: ['wx-swiper', attrs.class],
-          onTouchstart: event => { startX = event.touches[0].clientX; startY = event.touches[0].clientY },
-          onTouchend: event => finish(event.changedTouches[0].clientX, event.changedTouches[0].clientY),
-          onPointerdown: event => { if (event.pointerType !== 'touch') { startX = event.clientX; startY = event.clientY } },
-          onPointerup: event => { if (event.pointerType !== 'touch') finish(event.clientX, event.clientY) },
+          onTouchstart: event => {
+            touchEligible = canSwipe(event)
+            if (touchEligible) { startX = event.touches[0].clientX; startY = event.touches[0].clientY }
+          },
+          onTouchend: event => {
+            if (touchEligible) finish(event.changedTouches[0].clientX, event.changedTouches[0].clientY)
+            touchEligible = false
+          },
+          onTouchcancel: () => { touchEligible = false },
+          onPointerdown: event => {
+            if (event.pointerType === 'touch') return
+            pointerEligible = canSwipe(event)
+            if (pointerEligible) { startX = event.clientX; startY = event.clientY }
+          },
+          onPointerup: event => {
+            if (pointerEligible && event.pointerType !== 'touch') finish(event.clientX, event.clientY)
+            pointerEligible = false
+          },
+          onPointercancel: () => { pointerEligible = false },
           onWheel: event => {
-            if (!props.vertical || Math.abs(event.deltaY) < 12 || Date.now() - lastWheel < 420) return
+            if (!props.vertical || !canSwipe(event) || Math.abs(event.deltaY) < 12 || Date.now() - lastWheel < 420) return
             lastWheel = Date.now()
             move(event.deltaY > 0 ? 1 : -1)
           }
