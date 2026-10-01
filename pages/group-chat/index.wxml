@@ -1,0 +1,46 @@
+<!-- 共创群聊天页 -->
+<view class="gc-page">
+
+  <!-- 顶部导航栏 + 游戏条 -->
+  <view class="gc-header" style="padding-top:{{statusBarHeight}}px">
+    <view class="gc-nav">
+      <text class="gc-back" bindtap="onBack">‹ 返回</text>
+      <text class="gc-nav-title">{{groupName}}</text>
+      <view class="gc-nav-placeholder"></view>
+    </view>
+    <!-- 游戏信息条（点击跳转） -->
+    <view class="game-info-bar" bindtap="onGameTap" wx:if="{{gameInfo}}">
+      <image class="game-bar-cover" src="{{gameInfo.cover}}" mode="aspectFill"/>
+      <view class="game-bar-info">
+        <text class="game-bar-title">{{gameInfo.title}}</text>
+        <text class="game-bar-hint">点击进入游戏 →</text>
+      </view>
+      <text class="game-bar-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 消息列表 -->
+  <scroll-view scroll-y class="gc-messages" scroll-into-view="{{scrollToMsg}}">
+    <view id="msg-{{index}}" class="msg-item {{item.isSelf?'self':'other'}}" wx:for="{{messages}}" wx:key="id">
+      <image class="msg-avatar" src="{{item.avatar}}" mode="aspectFill" wx:if="{{!item.isSelf}}"/>
+      <view class="msg-bubble-wrap {{item.isSelf?'self-wrap':''}}">
+        <view class="msg-name" wx:if="{{!item.isSelf}}">{{item.name}}</view>
+        <view class="msg-bubble {{item.isSelf?'bubble-self':''}}">
+          <text>{{item.text}}</text>
+        </view>
+        <text class="msg-time">{{item.time}}</text>
+      </view>
+      <image class="msg-avatar" src="{{item.avatar}}" mode="aspectFill" wx:if="{{item.isSelf}}"/>
+    </view>
+    <view style="height:20rpx"></view>
+  </scroll-view>
+
+  <!-- 底部输入栏 -->
+  <view class="gc-input-bar">
+    <input class="gc-input" placeholder="说点什么..." value="{{inputText}}" bindinput="onInput" confirm-type="send" bindconfirm="onSend"/>
+    <view class="gc-send-btn {{inputText.trim()?'active':''}}" bindtap="onSend">
+      <text>发送</text>
+    </view>
+  </view>
+
+</view>

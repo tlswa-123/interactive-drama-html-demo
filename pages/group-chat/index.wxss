@@ -1,0 +1,138 @@
+.gc-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #F5F0EB;
+}
+
+/* ===== 头部 ===== */
+.gc-header {
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.gc-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12rpx 24rpx;
+  border-bottom: 1rpx solid rgba(0,0,0,0.05);
+}
+.gc-back { font-size: 30rpx; color: #F97316; font-weight: bold; }
+.gc-nav-title { font-size: 32rpx; font-weight: bold; color: #3D2C29; }
+.gc-nav-placeholder { width: 80rpx; }
+
+/* 游戏信息条 */
+.game-info-bar {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 20rpx;
+  margin: 8rpx 16rpx;
+  background: linear-gradient(135deg, #FFF5EE, #FFF0E6);
+  border-radius: 16rpx;
+  border: 1rpx solid rgba(249,115,22,0.15);
+  gap: 14rpx;
+}
+.game-bar-cover {
+  width: 72rpx; height: 72rpx;
+  border-radius: 12rpx;
+  flex-shrink: 0;
+}
+.game-bar-info { flex: 1; }
+.game-bar-title {
+  font-size: 26rpx; font-weight: bold; color: #3D2C29; display: block;
+}
+.game-bar-hint {
+  font-size: 21rpx; color: #F97316; display: block; margin-top: 2rpx;
+}
+.game-bar-arrow {
+  font-size: 36rpx; color: #C9957A; flex-shrink: 0;
+}
+
+/* ===== 消息列表 ===== */
+.gc-messages {
+  flex: 1;
+  padding: 20rpx 24rpx;
+}
+
+.msg-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 28rpx;
+}
+.msg-item.self { flex-direction: row-reverse; }
+
+.msg-avatar {
+  width: 68rpx; height: 68rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.msg-bubble-wrap {
+  max-width: 65%;
+  margin: 0 14rpx;
+}
+.self-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.msg-name {
+  font-size: 22rpx; color: #8B7355;
+  margin-bottom: 6rpx; display: block;
+}
+
+.msg-bubble {
+  background: #fff;
+  padding: 18rpx 22rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 1rpx 4rpx rgba(0,0,0,0.06);
+}
+.msg-bubble.bubble-self {
+  background: linear-gradient(135deg, #F97316, #EC4899);
+}
+.msg-bubble text {
+  font-size: 27rpx; color: #3D2C29;
+  line-height: 1.5; word-break: break-all;
+}
+.msg-bubble.bubble-self text { color: #fff; }
+
+.msg-time {
+  font-size: 19rpx; color: #C9957A;
+  margin-top: 6rpx; display: block;
+}
+
+/* ===== 底部输入栏 ===== */
+.gc-input-bar {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 20rpx;
+  background: #fff;
+  border-top: 1rpx solid rgba(0,0,0,0.06);
+  gap: 14rpx;
+  flex-shrink: 0;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+}
+.gc-input {
+  flex: 1;
+  height: 72rpx;
+  background: #F5F0EB;
+  border-radius: 36rpx;
+  padding: 0 28rpx;
+  font-size: 27rpx;
+}
+.gc-send-btn {
+  padding: 14rpx 28rpx;
+  border-radius: 30rpx;
+  background: #E8DFD8;
+  transition: all 0.2s;
+}
+.gc-send-btn.active {
+  background: linear-gradient(135deg, #F97316, #EC4899);
+}
+.gc-send-btn text {
+  font-size: 26rpx; color: #fff;
+  font-weight: 600;
+}
+.gc-send-btn:not(.active) text { color: #C9957A; }

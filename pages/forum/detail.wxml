@@ -1,0 +1,62 @@
+<view class="forum-detail-page">
+  <!-- 帖子内容区 -->
+  <scroll-view scroll-y class="detail-scroll" wx:if="{{post}}">
+    <view class="post-section">
+      <!-- 作者信息 -->
+      <view class="post-header">
+        <image class="post-author-avatar" src="{{post.avatar}}" mode="aspectFill"/>
+        <view class="post-author-info">
+          <text class="post-author-name">{{post.author}}</text>
+          <view class="post-meta-row">
+            <text class="post-category-pill" style="background:{{post.categoryColor}}15;color:{{post.categoryColor}};">{{post.category}}</text>
+            <text class="post-time">{{post.createTime}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 标题 & 正文 -->
+      <text class="post-detail-title">{{post.title}}</text>
+      <text class="post-detail-content">{{post.content}}</text>
+
+      <!-- 点赞/评论统计 -->
+      <view class="post-stats">
+        <view class="stat-item {{isLiked?'liked':''}}" bindtap="onLikeTap">
+          <text class="stat-icon">{{isLiked?'❤️':'🤍'}}</text>
+          <text class="stat-num">{{post.likes}}</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-icon">💬</text>
+          <text class="stat-num">{{post.comments}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 评论列表 -->
+    <view class="comments-section">
+      <text class="comments-title">评论 ({{comments.length}})</text>
+      <view class="comment-list">
+        <view class="comment-item" wx:for="{{comments}}" wx:key="id">
+          <image class="comment-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+          <view class="comment-body">
+            <view class="comment-top">
+              <text class="comment-author">{{item.author}}</text>
+              <text class="comment-time">{{item.createTime}}</text>
+            </view>
+            <text class="comment-content">{{item.content}}</text>
+            <view class="comment-actions">
+              <text class="comment-likes">❤️ {{item.likes}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部评论输入框 -->
+  <view class="comment-input-bar" wx:if="{{post}}">
+    <input class="comment-input" placeholder="写评论..." value="{{commentInput}}" bindinput="onCommentInput" confirm-type="send" bindconfirm="onSendComment"/>
+    <view class="send-btn {{commentInput.trim()?'active':''}}" bindtap="onSendComment">
+      <text>发送</text>
+    </view>
+  </view>
+</view>

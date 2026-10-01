@@ -1,0 +1,101 @@
+<!-- 视频详情页 -->
+<view class="detail-page" wx:if="{{video}}">
+  
+  <!-- 视频播放区域 -->
+  <view class="detail-video-wrap">
+    <video
+      id="detailVideo"
+      class="detail-video"
+      src="{{video.src}}"
+      poster="{{video.poster}}"
+      autoplay="{{true}}"
+      controls="{{true}}"
+      object-fit="contain"
+      show-fullscreen-btn="{{true}}"
+      show-play-btn="{{true}}"
+      show-progress="{{true}}"
+    ></video>
+  </view>
+
+  <!-- 下方内容区（可滚动） -->
+  <scroll-view scroll-y class="detail-scroll">
+    
+    <!-- 标题 -->
+    <text class="detail-title">{{video.title}}</text>
+    <text class="detail-desc">{{video.desc}}</text>
+    
+    <!-- 作者 + 关注 -->
+    <view class="author-row">
+      <view class="author-left">
+        <image class="author-avatar-lg" src="{{video.avatar}}" mode="aspectFill" />
+        <text class="author-name-lg">@{{video.author}}</text>
+      </view>
+      <button class="follow-btn-sm">+ 关注</button>
+    </view>
+
+    <!-- 互动按钮栏 -->
+    <view class="interaction-row">
+      <view class="interaction-item {{liked ? 'liked' : ''}}" bindtap="onLikeTap">
+        <image class="interaction-icon-img" wx:if="{{liked}}" src="/assets/icons/heart-filled.png" mode="aspectFit"/>
+        <image class="interaction-icon-img" wx:else src="/assets/icons/heart-outline.png" mode="aspectFit"/>
+        <text class="interaction-count">{{video.likes}}</text>
+      </view>
+      <view class="interaction-item" bindtap="onShowComments">
+        <image class="interaction-icon-img" src="/assets/icons/comment.png" mode="aspectFit"/>
+        <text class="interaction-count">{{video.comments}}</text>
+      </view>
+      <view class="interaction-item">
+        <image class="interaction-icon-img" src="/assets/icons/share.png" mode="aspectFit"/>
+        <text class="interaction-count">{{video.shares}}</text>
+      </view>
+      <view class="interaction-item">
+        <image class="interaction-icon-img" src="/assets/icons/bookmark.png" mode="aspectFit"/>
+        <text class="interaction-count">收藏</text>
+      </view>
+    </view>
+
+    <!-- Tab 切换：简介 / 评论 -->
+    <view class="detail-tabs">
+      <text class="detail-tab {{activeTab==='intro'?'active':''}}" bindtap="onTabIntro">简介</text>
+      <text class="detail-tab {{activeTab==='comments'?'active':''}}" bindtap="onTabComments">评论 {{commentList.length}}</text>
+    </view>
+
+    <!-- 简介 -->
+    <view class="tab-content" wx:if="{{activeTab==='intro'}}">
+      <text class="intro-text">{{video.desc}}</text>
+      <view class="intro-tags">
+        <text class="intro-tag">{{video.genre}}</text>
+        <text class="intro-tag">互动剧本</text>
+        <text class="intro-tag">AI短剧</text>
+      </view>
+    </view>
+
+    <!-- 评论区 -->
+    <view class="tab-content" wx:if="{{activeTab==='comments'}}">
+      <view class="comment-item" wx:for="{{commentList}}" wx:key="id">
+        <image class="comment-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+        <view class="comment-body">
+          <view class="comment-header">
+            <text class="comment-user">{{item.user}}</text>
+            <text class="comment-time">{{item.time}}</text>
+          </view>
+          <text class="comment-text">{{item.text}}</text>
+          <view class="comment-actions">
+            <image class="comment-like-icon" src="/assets/icons/heart-outline.png" mode="aspectFit"/>
+            <text class="comment-like-count">{{item.likes}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="no-more-comments">
+        <text>— 没有更多评论了 —</text>
+      </view>
+    </view>
+
+  </scroll-view>
+
+</view>
+
+<!-- 加载中 -->
+<view wx:else class="loading-view">
+  <text>视频加载中...</text>
+</view>

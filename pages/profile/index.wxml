@@ -1,0 +1,231 @@
+<!-- 我的页面 -->
+<view class="profile-page">
+
+  <!-- 顶部个人信息区 -->
+  <view class="profile-header" style="padding-top:{{statusBarHeight + 16}}px">
+    <!-- 左上角：任务 + 设置 -->
+    <view class="header-left-actions" style="top:{{statusBarHeight + 10}}px">
+      <view class="header-action-btn" bindtap="onTaskTap">
+        <image class="header-action-icon" src="/assets/icons/feedback-warm.png" mode="aspectFit"/>
+        <view class="action-red-dot" wx:if="{{hasNewTask}}"></view>
+      </view>
+      <view class="header-action-btn" bindtap="onSettingsTap">
+        <image class="header-action-icon" src="/assets/icons/settings.png" mode="aspectFit"/>
+      </view>
+    </view>
+
+    <view class="profile-card">
+      <!-- 头像 -->
+      <view class="avatar-wrap" bindtap="onGetUserInfo">
+        <image wx:if="{{userInfo.avatar}}" class="avatar-img" src="{{userInfo.avatar}}" mode="aspectFill"/>
+        <view wx:else class="avatar-placeholder">
+          <text class="avatar-placeholder-text">点击\n登录</text>
+        </view>
+      </view>
+
+      <!-- 名字 & 小标签行 -->
+      <view class="user-name-row">
+        <text class="user-nickname">{{userInfo.nickName}}</text>
+        <view class="user-badges">
+          <view class="badge-item lv-badge">Lv.{{userLevel}}</view>
+          <view class="badge-item coin-badge" bindtap="onCoinTap">
+            <image class="badge-icon" src="/assets/icons/coin-warm.png" mode="aspectFit"/>
+            <text>{{coins}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 关注 / 粉丝 -->
+      <view class="follow-row">
+        <view class="follow-item">
+          <text class="follow-num">{{userInfo.following}}</text>
+          <text class="follow-label">关注</text>
+        </view>
+        <view class="follow-divider"></view>
+        <view class="follow-item">
+          <text class="follow-num">{{userInfo.followers}}</text>
+          <text class="follow-label">粉丝</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Tab 切换栏 -->
+  <view class="content-tabs">
+    <view class="tab-with-badge">
+      <text class="content-tab {{activeTab==='published'?'active':''}}" data-tab="published" bindtap="onTabTap">发布 {{stats.published}}</text>
+      <view class="draft-badge" wx:if="{{draftCount > 0}}" bindtap="onGoDrafts">
+        <text class="draft-badge-text">草稿{{draftCount}}</text>
+      </view>
+    </view>
+    <text class="content-tab {{activeTab==='liked'?'active':''}}" data-tab="liked" bindtap="onTabTap">点赞 {{stats.liked}}</text>
+    <text class="content-tab {{activeTab==='collected'?'active':''}}" data-tab="collected" bindtap="onTabTap">收藏 {{stats.collected}}</text>
+    <text class="content-tab {{activeTab==='history'?'active':''}}" data-tab="history" bindtap="onTabTap">历史 {{stats.history}}</text>
+  </view>
+
+  <!-- 内容区：瀑布流双列 -->
+  <view class="content-scroll">
+
+    <!-- 发布 Tab 分类筛选 -->
+    <view class="sub-filter-tabs" wx:if="{{activeTab==='published'}}">
+      <text class="sub-filter-tab {{publishedFilter==='all'?'active':''}}" data-filter="all" bindtap="onPublishedFilterTap">全部</text>
+      <text class="sub-filter-tab {{publishedFilter==='drama'?'active':''}}" data-filter="drama" bindtap="onPublishedFilterTap">短剧</text>
+      <text class="sub-filter-tab {{publishedFilter==='game'?'active':''}}" data-filter="game" bindtap="onPublishedFilterTap">游戏</text>
+      <text class="sub-filter-tab {{publishedFilter==='post'?'active':''}}" data-filter="post" bindtap="onPublishedFilterTap">帖子</text>
+      <text class="sub-filter-tab {{publishedFilter==='bounty'?'active':''}}" data-filter="bounty" bindtap="onPublishedFilterTap">悬赏</text>
+    </view>
+
+    <!-- 发布 Tab：混合内容卡片 -->
+    <block wx:if="{{activeTab==='published'}}">
+      <view class="waterfall-container" wx:if="{{currentList.length > 0}}">
+        <!-- 左列 -->
+        <view class="waterfall-column">
+          <block wx:for="{{leftList}}" wx:key="id">
+            <!-- 短剧卡片 -->
+            <view class="post-card" wx:if="{{item.type==='drama'}}" data-storyid="{{item.id}}" bindtap="onStoryTap">
+              <view class="post-cover-wrap">
+                <image class="post-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"/>
+                <view class="play-icon-overlay"><view class="play-triangle"></view></view>
+              </view>
+              <view class="post-info">
+                <text class="post-title">{{item.title}}</text>
+                <view class="post-author-row">
+                  <text class="post-name">{{item.author}}</text>
+                  <text class="post-genre">{{item.genre}}</text>
+                </view>
+              </view>
+            </view>
+            <!-- 游戏卡片 -->
+            <view class="mixed-game-card" wx:if="{{item.type==='game'}}" data-page="{{item.page}}" bindtap="onMixedGameTap">
+              <view class="mixed-game-icon" style="background:{{item.gameColor}}15;">
+                <text class="mixed-game-emoji">{{item.gameIcon}}</text>
+              </view>
+              <view class="mixed-card-info">
+                <text class="mixed-card-title">{{item.title}}</text>
+                <text class="mixed-card-tag game-tag">游戏</text>
+              </view>
+            </view>
+            <!-- 帖子卡片 -->
+            <view class="mixed-post-card" wx:if="{{item.type==='post'}}" data-id="{{item.id}}" bindtap="onMixedPostTap">
+              <view class="mixed-post-header">
+                <text class="mixed-post-category" style="background:{{item.categoryColor}}15;color:{{item.categoryColor}};">{{item.category}}</text>
+              </view>
+              <text class="mixed-card-title">{{item.title}}</text>
+              <text class="mixed-post-content">{{item.contentPreview}}</text>
+              <text class="mixed-card-tag post-tag">帖子</text>
+            </view>
+            <!-- 悬赏卡片 -->
+            <view class="mixed-bounty-card" wx:if="{{item.type==='bounty'}}" data-id="{{item.id}}" bindtap="onMixedBountyTap">
+              <view class="mixed-bounty-budget">🪙 {{item.budget}} 金币</view>
+              <text class="mixed-card-title">{{item.title}}</text>
+              <view class="mixed-bounty-tags">
+                <text class="mixed-bounty-type">{{item.bountyType}}</text>
+                <text class="mixed-bounty-status" style="color:{{item.statusColor}};">{{item.statusText}}</text>
+              </view>
+              <text class="mixed-card-tag bounty-tag">悬赏</text>
+            </view>
+          </block>
+        </view>
+        <!-- 右列 -->
+        <view class="waterfall-column">
+          <block wx:for="{{rightList}}" wx:key="id">
+            <!-- 短剧卡片 -->
+            <view class="post-card" wx:if="{{item.type==='drama'}}" data-storyid="{{item.id}}" bindtap="onStoryTap">
+              <view class="post-cover-wrap">
+                <image class="post-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"/>
+                <view class="play-icon-overlay"><view class="play-triangle"></view></view>
+              </view>
+              <view class="post-info">
+                <text class="post-title">{{item.title}}</text>
+                <view class="post-author-row">
+                  <text class="post-name">{{item.author}}</text>
+                  <text class="post-genre">{{item.genre}}</text>
+                </view>
+              </view>
+            </view>
+            <!-- 游戏卡片 -->
+            <view class="mixed-game-card" wx:if="{{item.type==='game'}}" data-page="{{item.page}}" bindtap="onMixedGameTap">
+              <view class="mixed-game-icon" style="background:{{item.gameColor}}15;">
+                <text class="mixed-game-emoji">{{item.gameIcon}}</text>
+              </view>
+              <view class="mixed-card-info">
+                <text class="mixed-card-title">{{item.title}}</text>
+                <text class="mixed-card-tag game-tag">游戏</text>
+              </view>
+            </view>
+            <!-- 帖子卡片 -->
+            <view class="mixed-post-card" wx:if="{{item.type==='post'}}" data-id="{{item.id}}" bindtap="onMixedPostTap">
+              <view class="mixed-post-header">
+                <text class="mixed-post-category" style="background:{{item.categoryColor}}15;color:{{item.categoryColor}};">{{item.category}}</text>
+              </view>
+              <text class="mixed-card-title">{{item.title}}</text>
+              <text class="mixed-post-content">{{item.contentPreview}}</text>
+              <text class="mixed-card-tag post-tag">帖子</text>
+            </view>
+            <!-- 悬赏卡片 -->
+            <view class="mixed-bounty-card" wx:if="{{item.type==='bounty'}}" data-id="{{item.id}}" bindtap="onMixedBountyTap">
+              <view class="mixed-bounty-budget">🪙 {{item.budget}} 金币</view>
+              <text class="mixed-card-title">{{item.title}}</text>
+              <view class="mixed-bounty-tags">
+                <text class="mixed-bounty-type">{{item.bountyType}}</text>
+                <text class="mixed-bounty-status" style="color:{{item.statusColor}};">{{item.statusText}}</text>
+              </view>
+              <text class="mixed-card-tag bounty-tag">悬赏</text>
+            </view>
+          </block>
+        </view>
+      </view>
+    </block>
+
+    <!-- 其他 Tab：原有短剧瀑布流 -->
+    <block wx:if="{{activeTab!=='published'}}">
+      <view class="waterfall-container" wx:if="{{currentList.length > 0}}">
+        <!-- 左列 -->
+        <view class="waterfall-column">
+          <view class="post-card" wx:for="{{leftList}}" wx:key="id" data-storyid="{{item.id}}" bindtap="onStoryTap">
+            <view class="post-cover-wrap">
+              <image class="post-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"/>
+              <view class="play-icon-overlay">
+                <view class="play-triangle"></view>
+              </view>
+            </view>
+            <view class="post-info">
+              <text class="post-title">{{item.title}}</text>
+              <view class="post-author-row">
+                <text class="post-name">{{item.author}}</text>
+                <text class="post-genre">{{item.genre}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 右列 -->
+        <view class="waterfall-column">
+          <view class="post-card" wx:for="{{rightList}}" wx:key="id" data-storyid="{{item.id}}" bindtap="onStoryTap">
+            <view class="post-cover-wrap">
+              <image class="post-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"/>
+              <view class="play-icon-overlay">
+                <view class="play-triangle"></view>
+              </view>
+            </view>
+            <view class="post-info">
+              <text class="post-title">{{item.title}}</text>
+              <view class="post-author-row">
+                <text class="post-name">{{item.author}}</text>
+                <text class="post-genre">{{item.genre}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{currentList.length === 0}}">
+      <text class="empty-icon">{{activeTab==='published'?'📝':activeTab==='liked'?'❤️':activeTab==='collected'?'⭐':'🕐'}}</text>
+      <text class="empty-text">{{activeTab==='published'?'还没有发布过内容':activeTab==='liked'?'还没有点赞过短剧':activeTab==='collected'?'还没有收藏过短剧':'还没有观看记录'}}</text>
+      <text class="empty-hint">去首页看看精彩互动短剧吧</text>
+    </view>
+
+  </view>
+
+</view>

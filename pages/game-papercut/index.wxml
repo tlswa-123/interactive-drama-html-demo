@@ -1,0 +1,86 @@
+<view class="container">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <text class="title">✂️ 剪纸工坊</text>
+    <text class="subtitle" wx:if="{{phase === 'cut'}}">已剪 {{cutCount}}/10 刀</text>
+  </view>
+
+  <!-- Canvas 画布 -->
+  <canvas type="2d" id="mainCanvas" class="main-canvas"
+    bindtouchstart="onTouchStart"
+    bindtouchmove="onTouchMove"
+    bindtouchend="onTouchEnd">
+  </canvas>
+
+  <!-- 用于导出图片的离屏 canvas -->
+  <canvas type="2d" id="exportCanvas" class="export-canvas"></canvas>
+
+  <!-- 底部按钮区 -->
+  <view class="footer" wx:if="{{!uiHidden}}">
+    <block wx:if="{{phase === 'show'}}">
+      <view class="btn primary" bindtap="startFolding">开始折纸 ✂️</view>
+    </block>
+    <block wx:if="{{phase === 'folding'}}">
+      <text class="hint">折叠中…</text>
+    </block>
+    <block wx:if="{{phase === 'ready'}}">
+      <view class="btn primary" bindtap="startCutting">开始剪纸 ✂️</view>
+    </block>
+    <block wx:if="{{phase === 'cut'}}">
+      <view class="btn-row">
+        <view class="btn secondary" bindtap="undoCut">撤销</view>
+        <view class="btn secondary" bindtap="clearCuts">清空</view>
+        <view class="btn primary" bindtap="unfold">展开看看 🎉</view>
+      </view>
+    </block>
+    <block wx:if="{{phase === 'result'}}">
+      <view class="btn-row">
+        <view class="btn secondary" bindtap="restart">再剪一张 🔄</view>
+        <view class="btn primary" bindtap="saveImage">保存图片 💾</view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 右侧操作栏（和短剧一样） -->
+  <view class="side-actions" wx:if="{{!uiHidden}}">
+    <view class="action-item">
+      <view class="action-icon" bindtap="onLikeTap">
+        <image class="action-icon-img" wx:if="{{liked}}" src="/assets/icons/heart-filled.png" mode="aspectFit"/>
+        <image class="action-icon-img" wx:else src="/assets/icons/heart-outline-warm.png" mode="aspectFit"/>
+      </view>
+      <text class="action-count">5234</text>
+    </view>
+    <view class="action-item">
+      <view class="action-icon">
+        <image class="action-icon-img" src="/assets/icons/comment-warm.png" mode="aspectFit"/>
+      </view>
+      <text class="action-count">312</text>
+    </view>
+    <view class="action-item">
+      <view class="action-icon">
+        <image class="action-icon-img" src="/assets/icons/bookmark-warm.png" mode="aspectFit"/>
+      </view>
+      <text class="action-count">收藏</text>
+    </view>
+  </view>
+
+  <!-- 底部信息（和短剧一样） -->
+  <view class="video-info" wx:if="{{!uiHidden}}">
+    <view class="info-row">
+      <text class="video-author">@剪纸大师</text>
+      <text class="genre-tag">创意</text>
+    </view>
+    <text class="video-title">剪纸工坊</text>
+    <text class="video-hint">互动游戏 · 手指剪纸六折对称</text>
+  </view>
+
+  <!-- 收起/展开按钮 -->
+  <view class="toggle-btn" bindtap="onToggleUI">
+    <text class="toggle-text">{{uiHidden ? '展开' : '收起'}}</text>
+  </view>
+
+  <!-- 提示 toast -->
+  <view class="toast {{showToast ? 'show' : ''}}">
+    <text>{{toastText}}</text>
+  </view>
+</view>

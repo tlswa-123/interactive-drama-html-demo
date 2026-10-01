@@ -1,0 +1,26 @@
+<view class="notify-page">
+  <view class="notify-header" style="padding-top:{{statusBarHeight + 10}}px">
+    <text class="back-btn" bindtap="onGoBack">← 返回</text>
+    <text class="notify-title">{{title}}</text>
+  </view>
+
+  <view class="notify-list">
+    <view class="notify-item" wx:for="{{list}}" wx:key="id">
+      <image class="notify-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+      <view class="notify-body">
+        <view class="notify-top">
+          <text class="notify-user">{{item.user}}</text>
+          <text class="notify-time">{{item.time}}</text>
+        </view>
+        <text class="notify-action">{{item.action}}</text>
+        <view class="notify-target-wrap">
+          <text class="notify-target">{{item.target}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="notify-empty" wx:if="{{list.length === 0}}">
+    <text class="empty-text">暂无消息</text>
+  </view>
+</view>

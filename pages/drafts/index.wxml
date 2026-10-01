@@ -1,0 +1,25 @@
+<view class="drafts-page">
+  <view class="drafts-empty" wx:if="{{drafts.length === 0}}">
+    <text class="empty-icon">📝</text>
+    <text class="empty-text">还没有草稿</text>
+    <text class="empty-sub">创作内容后会自动保存为草稿</text>
+  </view>
+
+  <view class="drafts-list" wx:if="{{drafts.length > 0}}">
+    <view class="draft-card" wx:for="{{drafts}}" wx:key="id" data-index="{{index}}" bindtap="onDraftTap">
+      <view class="draft-main">
+        <text class="draft-prompt">{{item.prompt}}</text>
+        <text class="draft-time">{{item.timeText}}</text>
+        <view class="draft-tags" wx:if="{{item.attachCount > 0}}">
+          <text class="draft-tag">📎 {{item.attachCount}}个附件</text>
+        </view>
+      </view>
+      <view class="draft-cover" wx:if="{{item.cover}}">
+        <image class="draft-cover-img" src="{{item.cover}}" mode="aspectFill"/>
+      </view>
+      <view class="draft-delete" catchtap="onDeleteDraft" data-index="{{index}}">
+        <text>删除</text>
+      </view>
+    </view>
+  </view>
+</view>

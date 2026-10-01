@@ -1,0 +1,148 @@
+.tasks-page {
+  min-height: var(--screen-height);
+  background: #FFF8F3;
+  padding: calc(var(--rpx) * 20) calc(var(--rpx) * 24);
+}
+
+/* 金币卡 */
+.coin-card {
+  background: linear-gradient(135deg, #FDBA74, #F9A8D4);
+  border-radius: calc(var(--rpx) * 24);
+  padding: calc(var(--rpx) * 32);
+  margin-bottom: calc(var(--rpx) * 24);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.coin-card-left {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--rpx) * 16);
+}
+
+.coin-big-icon {
+  font-size: calc(var(--rpx) * 56);
+}
+
+.coin-info {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--rpx) * 4);
+}
+
+.coin-amount {
+  font-size: calc(var(--rpx) * 48);
+  color: #fff;
+  font-weight: 700;
+}
+
+.coin-desc {
+  font-size: calc(var(--rpx) * 22);
+  color: rgba(255,255,255,0.8);
+}
+
+/* 任务列表 */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--rpx) * 16);
+}
+
+.task-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: calc(var(--rpx) * 20);
+  padding: calc(var(--rpx) * 24);
+  box-shadow: 0 calc(var(--rpx) * 2) calc(var(--rpx) * 12) rgba(61, 44, 41, 0.06);
+}
+
+.task-card.done {
+  opacity: 0.6;
+}
+
+.task-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--rpx) * 6);
+}
+
+.task-title {
+  font-size: calc(var(--rpx) * 28);
+  color: #3D2C29;
+  font-weight: 600;
+}
+
+.task-desc {
+  font-size: calc(var(--rpx) * 22);
+  color: #8B7355;
+}
+
+.task-progress-bar {
+  width: calc(var(--rpx) * 200);
+  height: calc(var(--rpx) * 8);
+  background: #F5F0EB;
+  border-radius: calc(var(--rpx) * 4);
+  margin-top: calc(var(--rpx) * 6);
+  overflow: hidden;
+}
+
+.task-progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, #F97316, #EC4899);
+  border-radius: calc(var(--rpx) * 4);
+  transition: width 0.3s;
+}
+
+.task-progress-text {
+  font-size: calc(var(--rpx) * 20);
+  color: #C9957A;
+}
+
+.task-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--rpx) * 10);
+  flex-shrink: 0;
+}
+
+.task-reward {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--rpx) * 4);
+}
+
+.task-reward-icon {
+  font-size: calc(var(--rpx) * 24);
+}
+
+.task-reward-num {
+  font-size: calc(var(--rpx) * 26);
+  color: #F97316;
+  font-weight: 700;
+}
+
+.task-btn {
+  padding: calc(var(--rpx) * 10) calc(var(--rpx) * 24);
+  border-radius: calc(var(--rpx) * 20);
+  background: linear-gradient(135deg, #FDBA74, #F9A8D4);
+}
+
+.task-btn text {
+  font-size: calc(var(--rpx) * 22);
+  color: #fff;
+  font-weight: 600;
+}
+
+.task-btn.claimed {
+  background: #E8E8E8;
+}
+
+.task-btn.claimed text {
+  color: #999;
+}

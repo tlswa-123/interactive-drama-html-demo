@@ -1,0 +1,45 @@
+<view class="post-form-page">
+  <!-- 顶部返回栏 -->
+  <view class="form-header" style="padding-top:{{statusBarHeight + 10}}px">
+    <view class="back-btn" bindtap="onGoBack">
+      <text class="back-arrow">←</text>
+    </view>
+    <text class="form-header-title">发布帖子</text>
+    <view class="header-placeholder"></view>
+  </view>
+
+  <scroll-view scroll-y class="form-scroll">
+    <!-- 分区选择 -->
+    <view class="form-group">
+      <text class="form-label">选择分区</text>
+      <picker mode="selector" range="{{categories}}" value="{{categoryIndex}}" bindchange="onCategoryChange">
+        <view class="form-picker">
+          <text>{{categories[categoryIndex]}}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 标题 -->
+    <view class="form-group">
+      <text class="form-label">标题</text>
+      <input class="form-input" placeholder="请输入帖子标题" value="{{title}}" bindinput="onTitleInput"/>
+    </view>
+
+    <!-- 正文 -->
+    <view class="form-group">
+      <text class="form-label">正文</text>
+      <textarea class="form-textarea" placeholder="分享你的观点、问题或经验..." value="{{content}}" bindinput="onContentInput" maxlength="2000"/>
+    </view>
+
+    <!-- 占位 -->
+    <view style="height:160rpx;"></view>
+  </scroll-view>
+
+  <!-- 底部发布按钮 -->
+  <view class="form-bottom-bar">
+    <view class="publish-btn" bindtap="onPublish">
+      <text>发布帖子</text>
+    </view>
+  </view>
+</view>

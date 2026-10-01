@@ -1,0 +1,282 @@
+<!-- 发现页 -->
+<view class="feed-page">
+
+  <!-- 一级 Tab：短剧 / 游戏 / 论坛 / 悬赏 -->
+  <view class="top-tabs">
+    <text class="top-tab {{topTabIndex===0?'active':''}}" data-index="0" bindtap="onTopTabTap">短剧</text>
+    <text class="top-tab {{topTabIndex===1?'active':''}}" data-index="1" bindtap="onTopTabTap">游戏</text>
+    <text class="top-tab {{topTabIndex===2?'active':''}}" data-index="2" bindtap="onTopTabTap">论坛</text>
+    <text class="top-tab {{topTabIndex===3?'active':''}}" data-index="3" bindtap="onTopTabTap">悬赏</text>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrap">
+      <text class="search-icon"><image class="search-icon-img" src="/assets/icons/search.png" mode="aspectFit"/></text>
+      <input
+        class="search-input"
+        placeholder="搜索视频、游戏..."
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearchConfirm"
+        confirm-type="search"
+      />
+    </view>
+    <text class="clear-btn" wx:if="{{searchKeyword}}" bindtap="onClearSearch">清除</text>
+  </view>
+
+  <swiper class="feed-swiper" style="height: {{swiperHeight}}px" current="{{topTabIndex}}" bindchange="onSwiperChange">
+    <!-- ===== 短剧内容 ===== -->
+    <swiper-item>
+      <scroll-view scroll-y class="feed-scroll-item">
+        <!-- 分类Tab栏 -->
+        <view class="category-tabs">
+          <text
+            class="category-tab {{item.isActive ? 'active' : ''}}"
+            wx:for="{{categoryList}}"
+            wx:key="name"
+            data-category="{{item.name}}"
+            catchtap="onCategoryTap"
+          >{{item.name}}</text>
+        </view>
+
+        <!-- 瀑布流双列布局 -->
+        <view class="feed-scroll">
+          <view class="waterfall-container">
+            <!-- 左列 -->
+            <view class="waterfall-column">
+              <view class="post-card" wx:for="{{leftPosts}}" wx:key="id" data-id="{{item.id}}" bindtap="onPostTap">
+                <view class="post-cover-wrap">
+                  <image class="post-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"/>
+                  <view class="play-icon-overlay"><view class="play-triangle"></view></view>
+                  <view class="self-rec-bubble" wx:if="{{item.selfRec}}"><text>{{item.selfRec}}</text></view>
+                </view>
+                <view class="post-info">
+                  <text class="post-title">{{item.title}}</text>
+                  <view class="post-author-row">
+                    <view class="post-author">
+                      <image class="post-avatar" src="{{item.avatar}}" mode="aspectFill" />
+                      <text class="post-name">{{item.author}}</text>
+                    </view>
+                    <view class="post-like-count">
+                      <image class="like-icon-sm" src="/assets/icons/heart-sm.png" mode="aspectFit"/>
+                      <text>{{item.likeText}}</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <!-- 右列 -->
+            <view class="waterfall-column">
+              <view class="post-card" wx:for="{{rightPosts}}" wx:key="id" data-id="{{item.id}}" bindtap="onPostTap">
+                <view class="post-cover-wrap">
+                  <image class="post-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"/>
+                  <view class="play-icon-overlay"><view class="play-triangle"></view></view>
+                  <view class="self-rec-bubble" wx:if="{{item.selfRec}}"><text>{{item.selfRec}}</text></view>
+                </view>
+                <view class="post-info">
+                  <text class="post-title">{{item.title}}</text>
+                  <view class="post-author-row">
+                    <view class="post-author">
+                      <image class="post-avatar" src="{{item.avatar}}" mode="aspectFill" />
+                      <text class="post-name">{{item.author}}</text>
+                    </view>
+                    <view class="post-like-count">
+                      <image class="like-icon-sm" src="/assets/icons/heart-sm.png" mode="aspectFit"/>
+                      <text>{{item.likeText}}</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="loading-tip" wx:if="{{loading}}"><text>加载中...</text></view>
+          <view class="loading-tip" wx:elif="{{!hasMore && posts.length > 0}}"><text>— 已经到底啦 —</text></view>
+        </view>
+      </scroll-view>
+    </swiper-item>
+
+    <!-- ===== 游戏内容 ===== -->
+    <swiper-item>
+      <scroll-view scroll-y class="feed-scroll-item">
+        <view class="feed-scroll">
+          <view class="waterfall-container">
+            <!-- 左列 -->
+            <view class="waterfall-column">
+              <view class="game-card" wx:for="{{leftGames}}" wx:key="id" data-page="{{item.gamePage}}" bindtap="onGameTap">
+                <view class="game-cover-wrap">
+                  <image class="game-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"/>
+                  <view class="game-cover-badge" style="background:{{item.gameColor}}">
+                    <text class="game-badge-text">开始</text>
+                  </view>
+                  <view class="self-rec-bubble" wx:if="{{item.selfRec}}"><text>{{item.selfRec}}</text></view>
+                </view>
+                <view class="post-info">
+                  <text class="post-title">{{item.title}}</text>
+                  <view class="post-author-row">
+                    <view class="post-author">
+                      <image class="post-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+                      <text class="post-name">{{item.author}}</text>
+                    </view>
+                    <view class="post-like-count">
+                      <image class="like-icon-sm" src="/assets/icons/heart-sm.png" mode="aspectFit"/>
+                      <text>{{item.likeText}}</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <!-- 右列 -->
+            <view class="waterfall-column">
+              <view class="game-card" wx:for="{{rightGames}}" wx:key="id" data-page="{{item.gamePage}}" bindtap="onGameTap">
+                <view class="game-cover-wrap">
+                  <image class="game-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"/>
+                  <view class="game-cover-badge" style="background:{{item.gameColor}}">
+                    <text class="game-badge-text">开始</text>
+                  </view>
+                  <view class="self-rec-bubble" wx:if="{{item.selfRec}}"><text>{{item.selfRec}}</text></view>
+                </view>
+                <view class="post-info">
+                  <text class="post-title">{{item.title}}</text>
+                  <view class="post-author-row">
+                    <view class="post-author">
+                      <image class="post-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+                      <text class="post-name">{{item.author}}</text>
+                    </view>
+                    <view class="post-like-count">
+                      <image class="like-icon-sm" src="/assets/icons/heart-sm.png" mode="aspectFit"/>
+                      <text>{{item.likeText}}</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </swiper-item>
+
+    <!-- ===== 论坛内容 ===== -->
+    <swiper-item>
+      <scroll-view scroll-y class="feed-scroll-item">
+        <!-- 论坛分区筛选 -->
+        <view class="category-tabs">
+          <text class="category-tab {{item.isActive ? 'active' : ''}}" wx:for="{{forumCategoryList}}" wx:key="name" data-category="{{item.name}}" catchtap="onForumCategoryTap">{{item.name}}</text>
+        </view>
+        <view class="feed-scroll">
+          <view class="waterfall-container">
+            <!-- 左列 -->
+            <view class="waterfall-column">
+              <view class="forum-card" wx:for="{{leftForumPosts}}" wx:key="id" data-id="{{item.id}}" bindtap="onForumTap">
+                <view class="forum-cover-wrap" wx:if="{{item.hasImage}}">
+                  <image class="forum-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"/>
+                </view>
+                <view class="forum-category-pill" style="background:{{item.categoryColor}}15;color:{{item.categoryColor}};">{{item.category}}</view>
+                <text class="forum-card-title">{{item.title}}</text>
+                <text class="forum-card-content">{{item.contentPreview}}</text>
+                <view class="forum-card-footer">
+                  <view class="forum-card-author">
+                    <image class="forum-card-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+                    <text class="forum-card-name">{{item.author}}</text>
+                  </view>
+                  <view class="forum-card-meta">
+                    <text class="forum-card-time">{{item.createTime}}</text>
+                    <text class="forum-card-comments">💬 {{item.comments}}</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <!-- 右列 -->
+            <view class="waterfall-column">
+              <view class="forum-card" wx:for="{{rightForumPosts}}" wx:key="id" data-id="{{item.id}}" bindtap="onForumTap">
+                <view class="forum-cover-wrap" wx:if="{{item.hasImage}}">
+                  <image class="forum-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"/>
+                </view>
+                <view class="forum-category-pill" style="background:{{item.categoryColor}}15;color:{{item.categoryColor}};">{{item.category}}</view>
+                <text class="forum-card-title">{{item.title}}</text>
+                <text class="forum-card-content">{{item.contentPreview}}</text>
+                <view class="forum-card-footer">
+                  <view class="forum-card-author">
+                    <image class="forum-card-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+                    <text class="forum-card-name">{{item.author}}</text>
+                  </view>
+                  <view class="forum-card-meta">
+                    <text class="forum-card-time">{{item.createTime}}</text>
+                    <text class="forum-card-comments">💬 {{item.comments}}</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="loading-tip" wx:if="{{loading}}"><text>加载中...</text></view>
+          <view class="loading-tip" wx:elif="{{!hasMore && forumPosts.length > 0}}"><text>— 已经到底啦 —</text></view>
+        </view>
+      </scroll-view>
+    </swiper-item>
+
+    <!-- ===== 悬赏内容 ===== -->
+    <swiper-item>
+      <scroll-view scroll-y class="feed-scroll-item">
+        <view class="feed-scroll">
+          <view class="waterfall-container">
+            <!-- 左列 -->
+            <view class="waterfall-column">
+              <view class="bounty-card" wx:for="{{leftBounties}}" wx:key="id" data-id="{{item.id}}" bindtap="onBountyTap">
+                <view class="bounty-cover-wrap">
+                  <image class="bounty-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"/>
+                </view>
+                <view class="bounty-budget-bar">
+                  <text class="bounty-budget-text">🪙 {{item.budget}} 金币</text>
+                </view>
+                <text class="bounty-card-title">{{item.title}}</text>
+                <view class="bounty-card-tags">
+                  <text class="bounty-type-tag">{{item.type}}</text>
+                  <text class="bounty-deadline">{{item.deadline}}</text>
+                </view>
+                <view class="bounty-card-footer">
+                  <view class="bounty-card-author">
+                    <image class="bounty-card-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+                    <text class="bounty-card-name">{{item.publisher}}</text>
+                  </view>
+                  <view class="bounty-card-meta">
+                    <text class="bounty-submissions">📎 {{item.submissionsCount}}件</text>
+                    <text class="bounty-status {{item.status}}">{{item.statusText}}</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <!-- 右列 -->
+            <view class="waterfall-column">
+              <view class="bounty-card" wx:for="{{rightBounties}}" wx:key="id" data-id="{{item.id}}" bindtap="onBountyTap">
+                <view class="bounty-cover-wrap">
+                  <image class="bounty-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"/>
+                </view>
+                <view class="bounty-budget-bar">
+                  <text class="bounty-budget-text">🪙 {{item.budget}} 金币</text>
+                </view>
+                <text class="bounty-card-title">{{item.title}}</text>
+                <view class="bounty-card-tags">
+                  <text class="bounty-type-tag">{{item.type}}</text>
+                  <text class="bounty-deadline">{{item.deadline}}</text>
+                </view>
+                <view class="bounty-card-footer">
+                  <view class="bounty-card-author">
+                    <image class="bounty-card-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+                    <text class="bounty-card-name">{{item.publisher}}</text>
+                  </view>
+                  <view class="bounty-card-meta">
+                    <text class="bounty-submissions">📎 {{item.submissionsCount}}件</text>
+                    <text class="bounty-status {{item.status}}">{{item.statusText}}</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="loading-tip" wx:if="{{loading}}"><text>加载中...</text></view>
+          <view class="loading-tip" wx:elif="{{!hasMore && bounties.length > 0}}"><text>— 已经到底啦 —</text></view>
+        </view>
+      </scroll-view>
+    </swiper-item>
+  </swiper>
+
+</view>

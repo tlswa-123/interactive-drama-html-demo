@@ -1,0 +1,120 @@
+.post-form-page {
+  min-height: var(--screen-height);
+  background: #FFF8F3;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 顶部返回栏 ===== */
+.form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(var(--rpx) * 24) calc(var(--rpx) * 16);
+  background: #fff;
+  border-bottom: calc(var(--rpx) * 1) solid rgba(0,0,0,0.05);
+}
+
+.back-btn {
+  width: calc(var(--rpx) * 64);
+  height: calc(var(--rpx) * 64);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-arrow {
+  font-size: calc(var(--rpx) * 36);
+  color: #3D2C29;
+}
+
+.form-header-title {
+  font-size: calc(var(--rpx) * 32);
+  font-weight: 700;
+  color: #3D2C29;
+}
+
+.header-placeholder {
+  width: calc(var(--rpx) * 64);
+}
+
+/* ===== 表单滚动区 ===== */
+.form-scroll {
+  flex: 1;
+  height: 0;
+}
+
+/* ===== 表单组 ===== */
+.form-group {
+  background: #fff;
+  padding: calc(var(--rpx) * 24);
+  margin-bottom: calc(var(--rpx) * 16);
+}
+
+.form-label {
+  font-size: calc(var(--rpx) * 28);
+  font-weight: 600;
+  color: #3D2C29;
+  margin-bottom: calc(var(--rpx) * 16);
+  display: block;
+}
+
+.form-picker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--rpx) * 20) calc(var(--rpx) * 24);
+  background: #FFF5EB;
+  border-radius: calc(var(--rpx) * 16);
+  font-size: calc(var(--rpx) * 28);
+  color: #3D2C29;
+}
+
+.picker-arrow {
+  font-size: calc(var(--rpx) * 20);
+  color: #C9957A;
+}
+
+.form-input {
+  height: calc(var(--rpx) * 80);
+  background: #FFF5EB;
+  border-radius: calc(var(--rpx) * 16);
+  padding: 0 calc(var(--rpx) * 24);
+  font-size: calc(var(--rpx) * 28);
+  color: #3D2C29;
+}
+
+.form-textarea {
+  width: auto;
+  min-height: calc(var(--rpx) * 300);
+  background: #FFF5EB;
+  border-radius: calc(var(--rpx) * 16);
+  padding: calc(var(--rpx) * 20) calc(var(--rpx) * 24);
+  font-size: calc(var(--rpx) * 28);
+  color: #3D2C29;
+  line-height: 1.6;
+}
+
+/* ===== 底部按钮 ===== */
+.form-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: calc(var(--rpx) * 16) calc(var(--rpx) * 24) calc(var(--rpx) * 32);
+  background: #fff;
+  border-top: calc(var(--rpx) * 1) solid rgba(0,0,0,0.05);
+}
+
+.publish-btn {
+  background: linear-gradient(135deg, #F97316, #EC4899);
+  border-radius: calc(var(--rpx) * 44);
+  padding: calc(var(--rpx) * 24) 0;
+  text-align: center;
+}
+
+.publish-btn text {
+  font-size: calc(var(--rpx) * 32);
+  color: #fff;
+  font-weight: 700;
+}

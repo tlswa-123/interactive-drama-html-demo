@@ -1,0 +1,33 @@
+.msg-page { min-height: 100vh; background: linear-gradient(to bottom, #FFF7EE 0%, #FFFBF7 35%, #FFFFFF 100%); /* 底部留白：TabBar(96rpx) + 安全区 + 额外安全余量 */ padding-bottom: calc(160rpx + env(safe-area-inset-bottom)); }
+
+.msg-header { padding: 20rpx 28rpx 24rpx; }
+.msg-header-title { font-size: 40rpx; font-weight: 700; color: #3D2C29; }
+
+/* 通知入口 */
+.notify-section { display: flex; justify-content: space-around; padding: 24rpx 40rpx 32rpx; border-bottom: 1rpx solid rgba(0,0,0,0.05); }
+.notify-item { display: flex; flex-direction: column; align-items: center; gap: 8rpx; position: relative; }
+.notify-icon-wrap { width: 88rpx; height: 88rpx; border-radius: 50%; background: rgba(249,115,22,0.1); display: flex; align-items: center; justify-content: center; position: relative; }
+.notify-icon { width: 36rpx; height: 36rpx; }
+.notify-badge { position: absolute; top: -4rpx; right: -4rpx; min-width: 32rpx; height: 32rpx; border-radius: 16rpx; background: #F43F5E; display: flex; align-items: center; justify-content: center; padding: 0 6rpx; }
+.notify-badge-num { font-size: 18rpx; color: #fff; font-weight: 600; }
+.notify-label { font-size: 22rpx; color: #8B7355; }
+
+/* 聊天列表 */
+.chat-section { padding: 20rpx 0; }
+.section-title { font-size: 26rpx; color: #8B7355; font-weight: 500; padding: 0 28rpx 16rpx; display: block; }
+
+.chat-item { display: flex; align-items: center; padding: 20rpx 28rpx; gap: 20rpx; }
+.chat-item:active { background: rgba(249,115,22,0.04); }
+
+.chat-avatar-wrap { position: relative; flex-shrink: 0; }
+.chat-avatar { width: 96rpx; height: 96rpx; border-radius: 50%; border: 2rpx solid rgba(249,115,22,0.1); }
+.chat-badge { position: absolute; top: -4rpx; right: -4rpx; min-width: 32rpx; height: 32rpx; border-radius: 16rpx; background: #F43F5E; display: flex; align-items: center; justify-content: center; padding: 0 6rpx; }
+.chat-badge-num { font-size: 18rpx; color: #fff; font-weight: 600; }
+.group-tag { position: absolute; bottom: -2rpx; right: -2rpx; background: #F97316; border-radius: 8rpx; padding: 2rpx 8rpx; }
+.group-tag-text { font-size: 16rpx; color: #fff; }
+
+.chat-body { flex: 1; overflow: hidden; }
+.chat-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6rpx; }
+.chat-name { font-size: 28rpx; color: #3D2C29; font-weight: 500; }
+.chat-time { font-size: 20rpx; color: #C9957A; }
+.chat-msg { font-size: 24rpx; color: #8B7355; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }

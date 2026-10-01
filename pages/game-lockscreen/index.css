@@ -1,0 +1,321 @@
+/* ========== 全局容器 ========== */
+.screen {
+  width: var(--screen-width);
+  height: var(--screen-height);
+  overflow: hidden;
+  position: relative;
+  background: #000;
+}
+
+/* ========== 通用状态栏 ========== */
+.status-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--rpx) * 88);
+  padding: calc(var(--rpx) * 44) calc(var(--rpx) * 32) 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.status-time {
+  font-size: calc(var(--rpx) * 24);
+  color: #FFF;
+  font-weight: 600;
+}
+
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--rpx) * 8);
+}
+
+.status-signal, .status-wifi, .status-battery {
+  font-size: calc(var(--rpx) * 20);
+  color: #FFF;
+}
+
+.status-bar.dark .status-time,
+.status-bar.dark .status-signal,
+.status-bar.dark .status-wifi,
+.status-bar.dark .status-battery {
+  color: #000;
+}
+
+/* ========== 壁纸 ========== */
+.wallpaper {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(160deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  z-index: 0;
+}
+
+.wallpaper-blur {
+  background: linear-gradient(160deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  filter: blur(0);
+  opacity: 0.85;
+}
+
+.home-wallpaper {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(145deg, #667eea 0%, #764ba2 100%);
+  z-index: 0;
+}
+
+/* ========== 页面切换 ========== */
+.lockscreen, .passcode-screen, .homescreen {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  z-index: 1;
+}
+
+.lockscreen.active, .passcode-screen.active, .homescreen.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 5;
+}
+
+/* ========== 锁屏 ========== */
+.lock-time-area {
+  position: absolute;
+  top: calc(var(--rpx) * 220);
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 2;
+}
+
+.lock-time {
+  display: block;
+  font-size: calc(var(--rpx) * 148);
+  font-weight: 200;
+  color: #FFF;
+  letter-spacing: calc(var(--rpx) * 4);
+  line-height: 1;
+}
+
+.lock-date {
+  display: block;
+  font-size: calc(var(--rpx) * 34);
+  color: rgba(255,255,255,0.85);
+  margin-top: calc(var(--rpx) * 16);
+  font-weight: 400;
+}
+
+.swipe-hint {
+  position: absolute;
+  bottom: calc(var(--rpx) * 60);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.swipe-line {
+  width: calc(var(--rpx) * 240);
+  height: calc(var(--rpx) * 8);
+  background: rgba(255,255,255,0.5);
+  border-radius: calc(var(--rpx) * 4);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ========== 密码页 ========== */
+.passcode-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: calc(var(--rpx) * 240);
+  height: 100%;
+}
+
+.passcode-title {
+  font-size: calc(var(--rpx) * 32);
+  color: #FFF;
+  margin-bottom: calc(var(--rpx) * 48);
+}
+
+/* 圆点 */
+.dots {
+  display: flex;
+  gap: calc(var(--rpx) * 36);
+  margin-bottom: calc(var(--rpx) * 80);
+}
+
+.dot {
+  width: calc(var(--rpx) * 24);
+  height: calc(var(--rpx) * 24);
+  border-radius: 50%;
+  border: calc(var(--rpx) * 3) solid rgba(255,255,255,0.7);
+  background: transparent;
+  transition: background 0.1s;
+}
+
+.dot.filled {
+  background: #FFF;
+  border-color: #FFF;
+}
+
+/* 晃动动画 */
+.dots.shake {
+  animation: shakeAnim 0.5s ease;
+}
+
+@keyframes shakeAnim {
+  0%, 100% { transform: translateX(0); }
+  10%, 50%, 90% { transform: translateX(calc(var(--rpx) * -16)); }
+  30%, 70% { transform: translateX(calc(var(--rpx) * 16)); }
+}
+
+/* 数字键盘 */
+.keypad {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--rpx) * 24);
+}
+
+.key-row {
+  display: flex;
+  justify-content: center;
+  gap: calc(var(--rpx) * 48);
+}
+
+.key {
+  width: calc(var(--rpx) * 140);
+  height: calc(var(--rpx) * 140);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: calc(var(--rpx) * 2) solid rgba(255,255,255,0.2);
+}
+
+.key:active {
+  background: rgba(255,255,255,0.3);
+}
+
+.key-empty {
+  background: transparent;
+  border: none;
+}
+
+.key-delete {
+  background: transparent;
+  border: none;
+}
+
+.key-num {
+  font-size: calc(var(--rpx) * 48);
+  color: #FFF;
+  font-weight: 300;
+  line-height: 1.1;
+}
+
+.key-sub {
+  font-size: calc(var(--rpx) * 16);
+  color: rgba(255,255,255,0.6);
+  letter-spacing: calc(var(--rpx) * 2);
+  margin-top: calc(var(--rpx) * 2);
+}
+
+.cancel-btn {
+  margin-top: calc(var(--rpx) * 48);
+  padding: calc(var(--rpx) * 16) calc(var(--rpx) * 40);
+}
+
+.cancel-btn text {
+  font-size: calc(var(--rpx) * 30);
+  color: rgba(255,255,255,0.7);
+}
+
+/* ========== 主屏幕 ========== */
+.app-grid {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  padding: calc(var(--rpx) * 180) calc(var(--rpx) * 48) 0;
+  gap: calc(var(--rpx) * 36) 0;
+  justify-content: space-between;
+}
+
+.app-icon {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: calc(var(--rpx) * 24);
+}
+
+.icon-img {
+  width: calc(var(--rpx) * 112);
+  height: calc(var(--rpx) * 112);
+  border-radius: calc(var(--rpx) * 24);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 calc(var(--rpx) * 4) calc(var(--rpx) * 12) rgba(0,0,0,0.2);
+}
+
+.icon-emoji {
+  font-size: calc(var(--rpx) * 48);
+}
+
+.icon-label {
+  font-size: calc(var(--rpx) * 22);
+  color: #FFF;
+  margin-top: calc(var(--rpx) * 10);
+  text-align: center;
+  max-width: calc(var(--rpx) * 120);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Dock */
+.dock {
+  position: absolute;
+  bottom: calc(var(--rpx) * 60);
+  left: calc(var(--rpx) * 48);
+  right: calc(var(--rpx) * 48);
+  height: calc(var(--rpx) * 140);
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(20px);
+  border-radius: calc(var(--rpx) * 40);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 calc(var(--rpx) * 32);
+  z-index: 3;
+}
+
+.dock-icon .icon-img {
+  width: calc(var(--rpx) * 100);
+  height: calc(var(--rpx) * 100);
+}
+
+.home-indicator {
+  position: absolute;
+  bottom: calc(var(--rpx) * 16);
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(var(--rpx) * 240);
+  height: calc(var(--rpx) * 8);
+  background: rgba(0,0,0,0.3);
+  border-radius: calc(var(--rpx) * 4);
+  z-index: 10;
+}

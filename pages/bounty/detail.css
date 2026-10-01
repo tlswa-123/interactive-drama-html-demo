@@ -1,0 +1,280 @@
+.bounty-detail-page {
+  min-height: var(--screen-height);
+  background: #FFF8F3;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 顶部返回栏 ===== */
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(var(--rpx) * 24) calc(var(--rpx) * 16);
+  background: #fff;
+  border-bottom: calc(var(--rpx) * 1) solid rgba(0,0,0,0.05);
+}
+
+.back-btn {
+  width: calc(var(--rpx) * 64);
+  height: calc(var(--rpx) * 64);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-arrow {
+  font-size: calc(var(--rpx) * 36);
+  color: #3D2C29;
+}
+
+.detail-header-title {
+  font-size: calc(var(--rpx) * 32);
+  font-weight: 700;
+  color: #3D2C29;
+}
+
+.header-placeholder {
+  width: calc(var(--rpx) * 64);
+}
+
+/* ===== 滚动内容区 ===== */
+.detail-scroll {
+  flex: 1;
+  height: 0;
+}
+
+/* ===== 预算卡片 ===== */
+.bounty-budget-card {
+  background: #FFF5EB;
+  padding: calc(var(--rpx) * 32) calc(var(--rpx) * 24);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: calc(var(--rpx) * 1) solid rgba(201, 149, 122, 0.15);
+}
+
+.bounty-budget-amount {
+  font-size: calc(var(--rpx) * 40);
+  color: #8B7355;
+  font-weight: 700;
+}
+
+.bounty-bounty-status {
+  font-size: calc(var(--rpx) * 22);
+  font-weight: 600;
+  padding: calc(var(--rpx) * 6) calc(var(--rpx) * 16);
+  border-radius: calc(var(--rpx) * 16);
+}
+
+/* ===== 标题 & 标签 ===== */
+.bounty-info-section {
+  background: #fff;
+  padding: calc(var(--rpx) * 24);
+  border-bottom: calc(var(--rpx) * 1) solid rgba(0,0,0,0.05);
+}
+
+.bounty-detail-title {
+  font-size: calc(var(--rpx) * 36);
+  font-weight: 700;
+  color: #3D2C29;
+  line-height: 1.4;
+  margin-bottom: calc(var(--rpx) * 16);
+  display: block;
+}
+
+.bounty-info-tags {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--rpx) * 16);
+}
+
+.bounty-info-type {
+  font-size: calc(var(--rpx) * 22);
+  color: #8B7355;
+  background: rgba(139, 115, 85, 0.08);
+  padding: calc(var(--rpx) * 6) calc(var(--rpx) * 16);
+  border-radius: calc(var(--rpx) * 12);
+}
+
+.bounty-info-deadline {
+  font-size: calc(var(--rpx) * 22);
+  color: #C9957A;
+}
+
+/* ===== 发布者 ===== */
+.bounty-publisher {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--rpx) * 16);
+  padding: calc(var(--rpx) * 20) calc(var(--rpx) * 24);
+  background: #fff;
+  border-bottom: calc(var(--rpx) * 1) solid rgba(0,0,0,0.05);
+}
+
+.bounty-publisher-avatar {
+  width: calc(var(--rpx) * 64);
+  height: calc(var(--rpx) * 64);
+  border-radius: 50%;
+  border: calc(var(--rpx) * 2) solid rgba(249,115,22,0.15);
+}
+
+.bounty-publisher-info {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--rpx) * 4);
+}
+
+.bounty-publisher-name {
+  font-size: calc(var(--rpx) * 28);
+  font-weight: 600;
+  color: #3D2C29;
+}
+
+.bounty-publisher-time {
+  font-size: calc(var(--rpx) * 22);
+  color: #C9957A;
+}
+
+/* ===== 需求描述 ===== */
+.bounty-desc-section {
+  background: #fff;
+  padding: calc(var(--rpx) * 24);
+  margin-top: calc(var(--rpx) * 16);
+}
+
+.section-label {
+  font-size: calc(var(--rpx) * 28);
+  font-weight: 700;
+  color: #3D2C29;
+  margin-bottom: calc(var(--rpx) * 16);
+  display: block;
+}
+
+.bounty-desc-text {
+  font-size: calc(var(--rpx) * 28);
+  color: #3D2C29;
+  line-height: 1.6;
+  display: block;
+}
+
+/* ===== 投稿列表 ===== */
+.submissions-section {
+  background: #fff;
+  padding: calc(var(--rpx) * 24);
+  margin-top: calc(var(--rpx) * 16);
+}
+
+.submissions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle-icon {
+  font-size: calc(var(--rpx) * 24);
+  color: #8B7355;
+}
+
+.submissions-list {
+  margin-top: calc(var(--rpx) * 16);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--rpx) * 16);
+}
+
+.submission-item {
+  background: #FFF8F3;
+  border-radius: calc(var(--rpx) * 16);
+  padding: calc(var(--rpx) * 20);
+}
+
+.submission-top {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--rpx) * 12);
+  margin-bottom: calc(var(--rpx) * 12);
+}
+
+.submission-avatar {
+  width: calc(var(--rpx) * 48);
+  height: calc(var(--rpx) * 48);
+  border-radius: 50%;
+}
+
+.submission-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--rpx) * 2);
+}
+
+.submission-author {
+  font-size: calc(var(--rpx) * 26);
+  font-weight: 600;
+  color: #3D2C29;
+}
+
+.submission-time {
+  font-size: calc(var(--rpx) * 20);
+  color: #C9957A;
+}
+
+.submission-status {
+  font-size: calc(var(--rpx) * 20);
+  font-weight: 600;
+  padding: calc(var(--rpx) * 4) calc(var(--rpx) * 12);
+  border-radius: calc(var(--rpx) * 10);
+}
+
+.submission-status.accepted {
+  color: #8B7355;
+  background: rgba(139, 115, 85, 0.1);
+}
+
+.submission-status.rejected {
+  color: #C9957A;
+  background: rgba(201, 149, 122, 0.1);
+}
+
+.submission-status.pending {
+  color: #8B7355;
+  background: rgba(139, 115, 85, 0.1);
+}
+
+.submission-content {
+  font-size: calc(var(--rpx) * 26);
+  color: #3D2C29;
+  line-height: 1.5;
+}
+
+.empty-submissions {
+  text-align: center;
+  padding: calc(var(--rpx) * 40) 0;
+  font-size: calc(var(--rpx) * 26);
+  color: #8B7355;
+}
+
+/* ===== 底部按钮 ===== */
+.bounty-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: calc(var(--rpx) * 16) calc(var(--rpx) * 24) calc(var(--rpx) * 32);
+  background: #fff;
+  border-top: calc(var(--rpx) * 1) solid rgba(0,0,0,0.05);
+}
+
+.submit-work-btn {
+  background: linear-gradient(135deg, #FDBA74, #F9A8D4);
+  border-radius: calc(var(--rpx) * 44);
+  padding: calc(var(--rpx) * 24) 0;
+  text-align: center;
+}
+
+.submit-work-btn text {
+  font-size: calc(var(--rpx) * 32);
+  color: #fff;
+  font-weight: 700;
+}

@@ -1,0 +1,60 @@
+<view class="game-container">
+  <canvas type="2d" id="gameCanvas" class="game-canvas"
+    bindtouchstart="onTouchStart"
+    bindtouchmove="onTouchMove"
+    bindtouchend="onTouchEnd">
+  </canvas>
+
+  <!-- HUD -->
+  <view class="hud">
+    <text class="level-text" style="color: {{themeColor}};">第 {{currentLevel}} / {{totalLevels}} 层</text>
+    <text class="time-text" style="color: {{themeColor}}; opacity: 0.7;">{{timeDisplay}}</text>
+  </view>
+
+  <!-- 右侧操作栏（和短剧完全一样） -->
+  <view class="side-actions" wx:if="{{!uiHidden}}">
+    <view class="action-item">
+      <view class="action-icon" bindtap="onLikeTap">
+        <image class="action-icon-img" wx:if="{{liked}}" src="/assets/icons/heart-filled.png" mode="aspectFit"/>
+        <image class="action-icon-img" wx:else src="/assets/icons/heart-outline-warm.png" mode="aspectFit"/>
+      </view>
+      <text class="action-count">8912</text>
+    </view>
+    <view class="action-item">
+      <view class="action-icon">
+        <image class="action-icon-img" src="/assets/icons/comment-warm.png" mode="aspectFit"/>
+      </view>
+      <text class="action-count">567</text>
+    </view>
+    <view class="action-item">
+      <view class="action-icon">
+        <image class="action-icon-img" src="/assets/icons/bookmark-warm.png" mode="aspectFit"/>
+      </view>
+      <text class="action-count">收藏</text>
+    </view>
+  </view>
+
+  <!-- 底部信息（和短剧完全一样） -->
+  <view class="video-info" wx:if="{{!uiHidden}}">
+    <view class="info-row">
+      <text class="video-author">@深渊工作室</text>
+      <text class="genre-tag">技巧</text>
+    </view>
+    <text class="video-title">坠落球</text>
+    <text class="video-hint">互动游戏 · 300层深渊挑战</text>
+  </view>
+
+  <!-- 右下角收起/展开按钮 -->
+  <view class="toggle-btn" bindtap="onToggleUI">
+    <text class="toggle-text">{{uiHidden ? '展开' : '收起'}}</text>
+  </view>
+
+  <!-- 通关弹窗 -->
+  <view class="win-overlay" wx:if="{{gameWon}}">
+    <text class="win-title" style="color: {{themeColor}};">🎉 通关！</text>
+    <text class="win-time" style="color: {{themeColor}}; opacity: 0.7;">用时 {{timeDisplay}}</text>
+    <view class="restart-btn" style="border-color: {{themeColor}};" bindtap="restartGame">
+      <text class="restart-text" style="color: {{themeColor}};">再来一次</text>
+    </view>
+  </view>
+</view>

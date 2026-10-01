@@ -1,0 +1,92 @@
+.drafts-page {
+  min-height: 100vh;
+  background: #FFF8F3;
+  padding: 20rpx 24rpx;
+}
+
+.drafts-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 200rpx;
+  gap: 16rpx;
+}
+
+.empty-icon { font-size: 80rpx; }
+.empty-text { font-size: 32rpx; color: #3D2C29; font-weight: 600; }
+.empty-sub { font-size: 24rpx; color: #C9957A; }
+
+.drafts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.draft-card {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(61, 44, 41, 0.06);
+  position: relative;
+}
+
+.draft-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.draft-prompt {
+  font-size: 28rpx;
+  color: #3D2C29;
+  font-weight: 500;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.draft-time {
+  font-size: 22rpx;
+  color: #C9957A;
+}
+
+.draft-tags {
+  display: flex;
+  gap: 8rpx;
+}
+
+.draft-tag {
+  font-size: 20rpx;
+  color: #8B7355;
+  background: #F5F0EB;
+  padding: 4rpx 12rpx;
+  border-radius: 10rpx;
+}
+
+.draft-cover {
+  flex-shrink: 0;
+}
+
+.draft-cover-img {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+}
+
+.draft-delete {
+  position: absolute;
+  top: 16rpx;
+  right: 16rpx;
+  font-size: 22rpx;
+  color: #C9957A;
+  padding: 6rpx 16rpx;
+  border-radius: 16rpx;
+  background: rgba(201, 149, 122, 0.08);
+}

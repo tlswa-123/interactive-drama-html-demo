@@ -1,0 +1,578 @@
+/* ===== 小红书风格信息流页面 - 暖色调 ===== */
+.feed-page {
+  height: var(--screen-height);
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom, #FFF7EE 0%, #FFFBF7 35%, #FFFFFF 100%);
+}
+
+.feed-swiper {
+  flex: 1;
+  height: auto;
+}
+
+.feed-scroll-item {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* ===== 一级 Tab：短剧 / 游戏 ===== */
+.top-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--rpx) * 48);
+  padding: calc(var(--rpx) * 12) 0 calc(var(--rpx) * 16);
+  background-color: transparent;
+}
+
+.top-tab {
+  font-size: calc(var(--rpx) * 32);
+  color: #8B7355;
+  font-weight: 400;
+  padding: calc(var(--rpx) * 8) 0;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.top-tab.active {
+  color: #F97316;
+  font-weight: 700;
+  font-size: calc(var(--rpx) * 34);
+}
+
+.top-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(var(--rpx) * 48);
+  height: calc(var(--rpx) * 6);
+  border-radius: calc(var(--rpx) * 3);
+  background: linear-gradient(135deg, #F97316, #EC4899);
+}
+
+.top-tab:active {
+  opacity: 0.7;
+}
+
+/* 搜索栏 */
+.search-bar {
+  display: flex;
+  align-items: center;
+  padding: calc(var(--rpx) * 16) calc(var(--rpx) * 24);
+  background-color: transparent;
+}
+
+.search-input-wrap {
+  flex: 1;
+  height: calc(var(--rpx) * 64);
+  background-color: #FFF5EB;
+  border-radius: calc(var(--rpx) * 32);
+  display: flex;
+  align-items: center;
+  padding: 0 calc(var(--rpx) * 24);
+  border: calc(var(--rpx) * 2) solid rgba(249,115,22,0.12);
+}
+
+.search-input-wrap:focus-within {
+  border-color: rgba(249,115,22,0.35);
+  box-shadow: 0 0 0 calc(var(--rpx) * 4) rgba(249,115,22,0.08);
+}
+
+.search-icon {
+  margin-right: calc(var(--rpx) * 12);
+  display: flex;
+  align-items: center;
+}
+
+.search-icon-img {
+  width: calc(var(--rpx) * 32);
+  height: calc(var(--rpx) * 32);
+}
+
+.search-input {
+  flex: 1;
+  height: calc(var(--rpx) * 64);
+  font-size: calc(var(--rpx) * 26);
+  color: #3D2C29;
+}
+
+.clear-btn {
+  margin-left: calc(var(--rpx) * 16);
+  padding: calc(var(--rpx) * 8) calc(var(--rpx) * 16);
+  font-size: calc(var(--rpx) * 24);
+  color: #F97316;
+  background: none;
+  border: none;
+}
+
+/* ===== 分类 Tab 栏 ===== */
+.category-tabs {
+  display: flex;
+  align-items: center;
+  padding: calc(var(--rpx) * 16) calc(var(--rpx) * 20);
+  background-color: transparent;
+  gap: 0;
+  border-bottom: calc(var(--rpx) * 1) solid rgba(0,0,0,0.05);
+}
+
+.category-tab {
+  flex: 1;
+  text-align: center;
+  font-size: calc(var(--rpx) * 26);
+  color: #8B7355;
+  padding: calc(var(--rpx) * 10) 0 calc(var(--rpx) * 18);
+  position: relative;
+  transition: all 0.2s ease;
+  font-weight: 400;
+}
+
+.category-tab.active {
+  color: #F97316;
+  font-weight: 700;
+}
+
+.category-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: calc(var(--rpx) * 6);
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(var(--rpx) * 36);
+  height: calc(var(--rpx) * 6);
+  border-radius: calc(var(--rpx) * 3);
+  background: linear-gradient(135deg, #F97316, #EC4899);
+}
+
+.category-tab:active {
+  opacity: 0.7;
+}
+
+/* ===== 瀑布流滚动区域 ===== */
+.feed-scroll {
+  padding: calc(var(--rpx) * 16) 0 calc(calc(var(--rpx) * 20) + calc(var(--rpx) * 160));
+}
+
+.waterfall-container {
+  display: flex;
+  justify-content: space-between;
+  padding: calc(var(--rpx) * 16);
+}
+
+.waterfall-column {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--rpx) * 16);
+}
+
+/* 帖子卡片 */
+.post-card {
+  background-color: #fff;
+  border-radius: calc(var(--rpx) * 20);
+  overflow: hidden;
+  box-shadow: 0 calc(var(--rpx) * 2) calc(var(--rpx) * 12) rgba(61,44,41,0.06);
+}
+
+.post-cover-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 133.33%;  /* 3:4 比例 = 4/3 * 100% */
+  overflow: hidden;
+}
+
+.post-cover {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: calc(var(--rpx) * 20) calc(var(--rpx) * 20) 0 0;
+}
+
+.play-icon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(var(--rpx) * 72);
+  height: calc(var(--rpx) * 72);
+  border-radius: 50%;
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: calc(var(--rpx) * 16) 0 calc(var(--rpx) * 16) calc(var(--rpx) * 26);
+  border-color: transparent transparent transparent #fff;
+  margin-left: calc(var(--rpx) * 6);
+}
+
+.post-info {
+  padding: calc(var(--rpx) * 16);
+}
+
+.post-title {
+  font-size: calc(var(--rpx) * 26);
+  color: #3D2C29;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: calc(var(--rpx) * 12);
+}
+
+.post-author-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--rpx) * 10);
+}
+
+.post-avatar {
+  width: calc(var(--rpx) * 40);
+  height: calc(var(--rpx) * 40);
+  border-radius: 50%;
+  border: calc(var(--rpx) * 2) solid rgba(249,115,22,0.2);
+}
+
+.post-name {
+  font-size: calc(var(--rpx) * 22);
+  color: #8B7355;
+  max-width: calc(var(--rpx) * 180);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.post-like-count {
+  font-size: calc(var(--rpx) * 22);
+  color: #F43F5E;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--rpx) * 4);
+}
+
+.like-icon-sm {
+  width: calc(var(--rpx) * 24);
+  height: calc(var(--rpx) * 24);
+}
+
+.loading-tip {
+  text-align: center;
+  padding: calc(var(--rpx) * 40) 0;
+  font-size: calc(var(--rpx) * 24);
+  color: #8B7355;
+}
+
+/* ===== 游戏卡片 ===== */
+.game-card {
+  background-color: #fff;
+  border-radius: calc(var(--rpx) * 20);
+  overflow: hidden;
+  box-shadow: 0 calc(var(--rpx) * 2) calc(var(--rpx) * 12) rgba(61, 44, 41, 0.06);
+}
+
+.game-cover-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 133.33%;
+  overflow: hidden;
+}
+
+.game-cover {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: calc(var(--rpx) * 20) calc(var(--rpx) * 20) 0 0;
+}
+
+.game-cover-badge {
+  position: absolute;
+  bottom: calc(var(--rpx) * 16);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: calc(var(--rpx) * 8) calc(var(--rpx) * 28);
+  border-radius: calc(var(--rpx) * 24);
+  box-shadow: 0 calc(var(--rpx) * 4) calc(var(--rpx) * 12) rgba(0,0,0,0.2);
+}
+
+.game-badge-text {
+  font-size: calc(var(--rpx) * 22);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ===== 论坛卡片 ===== */
+.forum-card {
+  background-color: #fff;
+  border-radius: calc(var(--rpx) * 20);
+  overflow: hidden;
+  box-shadow: 0 calc(var(--rpx) * 2) calc(var(--rpx) * 12) rgba(61, 44, 41, 0.06);
+  padding: calc(var(--rpx) * 20);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--rpx) * 12);
+}
+
+/* 论坛封面图 */
+.forum-cover-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 60%;
+  border-radius: calc(var(--rpx) * 16);
+  overflow: hidden;
+}
+
+.forum-cover {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.forum-category-pill {
+  display: inline-block;
+  font-size: calc(var(--rpx) * 20);
+  font-weight: 600;
+  padding: calc(var(--rpx) * 4) calc(var(--rpx) * 14);
+  border-radius: calc(var(--rpx) * 16);
+  align-self: flex-start;
+}
+
+.forum-card-title {
+  font-size: calc(var(--rpx) * 28);
+  color: #3D2C29;
+  font-weight: 600;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.forum-card-content {
+  font-size: calc(var(--rpx) * 24);
+  color: #8B7355;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.forum-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: calc(var(--rpx) * 4);
+}
+
+.forum-card-author {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--rpx) * 8);
+}
+
+.forum-card-avatar {
+  width: calc(var(--rpx) * 32);
+  height: calc(var(--rpx) * 32);
+  border-radius: 50%;
+}
+
+.forum-card-name {
+  font-size: calc(var(--rpx) * 20);
+  color: #8B7355;
+}
+
+.forum-card-meta {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--rpx) * 12);
+}
+
+.forum-card-time {
+  font-size: calc(var(--rpx) * 20);
+  color: #C9957A;
+}
+
+.forum-card-comments {
+  font-size: calc(var(--rpx) * 20);
+  color: #F97316;
+}
+
+/* ===== 悬赏卡片 ===== */
+.bounty-card {
+  background-color: #fff;
+  border-radius: calc(var(--rpx) * 20);
+  overflow: hidden;
+  box-shadow: 0 calc(var(--rpx) * 2) calc(var(--rpx) * 12) rgba(61, 44, 41, 0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 悬赏封面图 */
+.bounty-cover-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 60%;
+  overflow: hidden;
+}
+
+.bounty-cover {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.bounty-budget-bar {
+  background: #FFF5EB;
+  padding: calc(var(--rpx) * 16) calc(var(--rpx) * 20);
+  border-bottom: calc(var(--rpx) * 1) solid rgba(201, 149, 122, 0.15);
+}
+
+.bounty-budget-text {
+  font-size: calc(var(--rpx) * 30);
+  color: #8B7355;
+  font-weight: 700;
+}
+
+.bounty-card-title {
+  font-size: calc(var(--rpx) * 28);
+  color: #3D2C29;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: calc(var(--rpx) * 16) calc(var(--rpx) * 20) calc(var(--rpx) * 8);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bounty-card-tags {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--rpx) * 12);
+  padding: 0 calc(var(--rpx) * 20);
+}
+
+.bounty-type-tag {
+  font-size: calc(var(--rpx) * 20);
+  color: #8B7355;
+  background: rgba(139, 115, 85, 0.08);
+  padding: calc(var(--rpx) * 4) calc(var(--rpx) * 12);
+  border-radius: calc(var(--rpx) * 12);
+}
+
+.bounty-deadline {
+  font-size: calc(var(--rpx) * 20);
+  color: #C9957A;
+}
+
+.bounty-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--rpx) * 16) calc(var(--rpx) * 20) calc(var(--rpx) * 20);
+  margin-top: calc(var(--rpx) * 4);
+}
+
+.bounty-card-author {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--rpx) * 8);
+}
+
+.bounty-card-avatar {
+  width: calc(var(--rpx) * 32);
+  height: calc(var(--rpx) * 32);
+  border-radius: 50%;
+}
+
+.bounty-card-name {
+  font-size: calc(var(--rpx) * 20);
+  color: #8B7355;
+}
+
+.bounty-card-meta {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--rpx) * 12);
+}
+
+.bounty-submissions {
+  font-size: calc(var(--rpx) * 20);
+  color: #8B7355;
+}
+
+.bounty-status {
+  font-size: calc(var(--rpx) * 20);
+  font-weight: 600;
+  padding: calc(var(--rpx) * 2) calc(var(--rpx) * 10);
+  border-radius: calc(var(--rpx) * 10);
+}
+
+.bounty-status.open {
+  color: #8B7355;
+  background: rgba(139, 115, 85, 0.1);
+}
+
+.bounty-status.claimed {
+  color: #C9957A;
+  background: rgba(201, 149, 122, 0.1);
+}
+
+.bounty-status.submitted {
+  color: #8B7355;
+  background: rgba(139, 115, 85, 0.1);
+}
+
+.bounty-status.completed {
+  color: #8B7355;
+  background: rgba(139, 115, 85, 0.1);
+}
+
+.bounty-status.expired {
+  color: #C9957A;
+  background: rgba(201, 149, 122, 0.1);
+}
+
+/* ===== 自荐气泡 ===== */
+.self-rec-bubble {
+  position: absolute;
+  left: calc(var(--rpx) * 8);
+  bottom: calc(var(--rpx) * 8);
+  max-width: 80%;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: calc(var(--rpx) * 20);
+  padding: calc(var(--rpx) * 6) calc(var(--rpx) * 16);
+}
+.self-rec-bubble text {
+  font-size: calc(var(--rpx) * 20);
+  color: #fff;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}

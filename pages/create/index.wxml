@@ -1,0 +1,202 @@
+<!-- 创作页 -->
+<view class="create-page">
+
+  <!-- 左上角：金币 + 草稿（微信原生顶部栏高度区域，与右侧胶囊按钮对齐） -->
+  <view class="top-left-actions" style="top:{{statusBarHeight}}px">
+    <!-- 共创详情模式下显示返回按钮 -->
+    <view class="top-action-btn back-btn" wx:if="{{gameDetail}}" bindtap="onBackFromDetail">
+      <text class="back-arrow">‹</text>
+      <text class="top-action-text">返回</text>
+    </view>
+    <view class="top-action-btn" wx:if="{{!gameDetail}}" bindtap="onCoinTap">
+      <image class="top-action-icon" src="/assets/icons/coin-warm.png" mode="aspectFit"/>
+      <text class="top-action-text">{{coins}}</text>
+    </view>
+    <view class="top-action-btn" wx:if="{{!gameDetail}}" bindtap="onGoDrafts">
+      <image class="top-action-icon" src="/assets/icons/draft-warm.png" mode="aspectFit"/>
+      <text class="top-action-text">草稿</text>
+      <view class="top-action-badge" wx:if="{{draftCount > 0}}"><text>{{draftCount}}</text></view>
+    </view>
+  </view>
+
+  <!-- 顶部大输入框（紧贴顶部按钮下方，间距收窄） -->
+  <view class="prompt-input-section" style="padding-top:{{statusBarHeight + 52}}px">
+    <view class="prompt-input-wrap">
+      <textarea
+        class="prompt-textarea"
+        placeholder="做一个射击游戏，肉鸽，有多种道具选择..."
+        placeholder-class="prompt-placeholder"
+        value="{{promptText}}"
+        bindinput="onPromptInput"
+        maxlength="500"
+        auto-height
+      />
+      <!-- 附件工具栏（在输入框内部下方） -->
+      <view class="prompt-tools">
+        <view class="tool-btn" bindtap="onChooseImage">
+          <image class="tool-icon" src="/assets/icons/photo-warm.png" mode="aspectFit"/>
+          <text class="tool-label">照片</text>
+        </view>
+        <view class="tool-btn" bindtap="onChooseAudio">
+          <image class="tool-icon" src="/assets/icons/voice-warm.png" mode="aspectFit"/>
+          <text class="tool-label">声音</text>
+        </view>
+        <!-- 已选附件预览 -->
+        <view class="attachment-preview" wx:if="{{attachments.length > 0}}">
+          <view class="attachment-item" wx:for="{{attachments}}" wx:key="index">
+            <image wx:if="{{item.type === 'image'}}" class="attachment-thumb" src="{{item.path}}" mode="aspectFill"/>
+            <view wx:else class="attachment-audio">
+              <text class="audio-icon">🔊</text>
+              <text class="audio-name">{{item.name}}</text>
+            </view>
+            <view class="attachment-remove" data-index="{{index}}" bindtap="onRemoveAttachment">×</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 生成按钮 -->
+    <view class="generate-btn {{promptText ? 'active' : ''}}" bindtap="{{gameDetail ? 'onForkCreate' : 'onGenerate'}}">
+      <text class="generate-btn-text" wx:if="{{!gameDetail}}">✨ 开始创作</text>
+      <text class="generate-btn-text" wx:if="{{gameDetail}}">🔀 Fork 共创</text>
+    </view>
+  </view>
+
+  <!-- 灵感 / 共创 Tab（默认模式） -->
+  <view class="create-tabs" wx:if="{{!gameDetail}}">
+    <text class="create-tab {{createTab==='inspire'?'active':''}}" data-tab="inspire" bindtap="onCreateTabTap">灵感</text>
+    <text class="create-tab {{createTab==='collab'?'active':''}}" data-tab="collab" bindtap="onCreateTabTap">共创</text>
+  </view>
+
+  <!-- 游戏共创模式 Tab：详情 / 关卡 -->
+  <view class="create-tabs" wx:if="{{gameDetail}}">
+    <text class="create-tab {{createTab==='detail'?'active':''}}" data-tab="detail" bindtap="onCreateTabTap">详情</text>
+    <text class="create-tab {{createTab==='levels'?'active':''}}" data-tab="levels" bindtap="onCreateTabTap">关卡</text>
+  </view>
+
+  <!-- 游戏详情内容 -->
+  <scroll-view scroll-y class="create-scroll" wx:if="{{gameDetail && createTab==='detail'}}">
+    <view class="game-detail-section">
+      <!-- 游戏信息卡 -->
+      <view class="gd-header">
+        <image class="gd-cover" src="{{gameDetail.cover}}" mode="aspectFill"/>
+        <view class="gd-info">
+          <text class="gd-title">{{gameDetail.title}}</text>
+          <view class="gd-meta">
+            <image class="gd-avatar" src="{{gameDetail.avatar}}" mode="aspectFill"/>
+            <text class="gd-author">{{gameDetail.author}}</text>
+            <text class="gd-genre">{{gameDetail.genre}}</text>
+          </view>
+          <text class="gd-desc">{{gameDetail.desc}}</text>
+        </view>
+      </view>
+
+      <!-- 美术资源 -->
+      <view class="gd-block">
+        <text class="gd-block-title">🎨 美术资源</text>
+        <view class="gd-art-list">
+          <view class="gd-art-item" wx:for="{{gameDetail.artAssets}}" wx:key="name">
+            <image class="gd-art-img" src="{{item.preview}}" mode="aspectFill"/>
+            <text class="gd-art-name">{{item.name}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 代码文件 -->
+      <view class="gd-block">
+        <text class="gd-block-title">📄 代码文件</text>
+        <view class="gd-code-list">
+          <view class="gd-code-item" wx:for="{{gameDetail.codeFiles}}" wx:key="name">
+            <view class="gd-code-icon">📝</view>
+            <view class="gd-code-info">
+              <text class="gd-code-name">{{item.name}}</text>
+              <text class="gd-code-desc">{{item.desc}}</text>
+            </view>
+            <text class="gd-code-lines">{{item.lines}} 行</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 共创群聊入口 -->
+      <view class="gd-block" bindtap="onGroupChatTap">
+        <view class="group-chat-entry">
+          <view class="group-chat-left">
+            <image class="group-chat-icon" src="/assets/icons/comment-orange.png" mode="aspectFit"/>
+            <view class="group-chat-info">
+              <text class="group-chat-title">💬 {{gameDetail.title}} 共创群</text>
+              <text class="group-chat-desc">{{groupChatPreview}}</text>
+            </view>
+          </view>
+          <view class="group-chat-right">
+            <view class="group-chat-badge" wx:if="{{groupChatUnread > 0}}"><text>{{groupChatUnread}}</text></view>
+            <text class="group-chat-arrow">›</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 关卡内容 -->
+  <scroll-view scroll-y class="create-scroll" wx:if="{{gameDetail && createTab==='levels'}}">
+    <view class="levels-section">
+      <!-- 基础玩法 -->
+      <view class="levels-block">
+        <text class="levels-block-title">🎮 基础玩法</text>
+        <text class="levels-gameplay">{{gameDetail.gameplay}}</text>
+      </view>
+
+      <!-- 已有关卡 -->
+      <view class="levels-block">
+        <text class="levels-block-title">📦 已有关卡</text>
+        <text class="levels-hint">作者审核通过即可加入你的关卡</text>
+        <view class="levels-list">
+          <view class="level-card" wx:for="{{gameDetail.levels}}" wx:key="id">
+            <view class="level-index">{{item.index}}</view>
+            <view class="level-info">
+              <text class="level-name">{{item.name}}</text>
+              <text class="level-diff">难度：{{item.difficulty}}</text>
+            </view>
+            <view class="level-creator">
+              <image class="level-creator-avatar" src="{{item.creatorAvatar}}" mode="aspectFill"/>
+              <text class="level-creator-name">{{item.creator}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 灵感内容 -->
+  <scroll-view scroll-y class="create-scroll" wx:if="{{createTab==='inspire' && !gameDetail}}">
+    <view class="inspire-grid">
+      <view class="inspire-card" wx:for="{{inspireList}}" wx:key="id" data-prompt="{{item.prompt}}" bindtap="onInspireTap">
+        <image class="inspire-bg" src="{{item.cover}}" mode="aspectFill"/>
+        <view class="inspire-overlay"></view>
+        <view class="inspire-prompt">{{item.prompt}}</view>
+        <view class="inspire-tag">{{item.tag}}</view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 共创内容 -->
+  <scroll-view scroll-y class="create-scroll" wx:if="{{createTab==='collab' && !gameDetail}}">
+    <view class="collab-list">
+      <view class="collab-card" wx:for="{{collabGames}}" wx:key="id" data-page="{{item.gamePage}}" bindtap="onCollabTap">
+        <image class="collab-cover" src="{{item.cover}}" mode="aspectFill"/>
+        <view class="collab-info">
+          <text class="collab-title">{{item.title}}</text>
+          <text class="collab-desc">{{item.desc}}</text>
+          <view class="collab-meta">
+            <view class="collab-author">
+              <image class="collab-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+              <text class="collab-name">{{item.author}}</text>
+            </view>
+            <view class="collab-btn" catchtap="onCoCreate" data-game="{{item.id}}">
+              <text>🤝 共创</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+</view>

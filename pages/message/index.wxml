@@ -1,0 +1,42 @@
+<view class="msg-page">
+  <!-- 顶部标题 -->
+  <view class="msg-header" style="padding-top:{{statusBarHeight + 10}}px">
+    <text class="msg-header-title">消息</text>
+  </view>
+
+  <!-- 通知入口 -->
+  <view class="notify-section">
+    <view class="notify-item" wx:for="{{notifyTabs}}" wx:key="key" data-key="{{item.key}}" bindtap="onNotifyTap">
+      <view class="notify-icon-wrap">
+        <image class="notify-icon" src="{{item.icon}}" mode="aspectFit"/>
+        <view class="notify-badge" wx:if="{{item.count > 0}}">
+          <text class="notify-badge-num">{{item.count}}</text>
+        </view>
+      </view>
+      <text class="notify-label">{{item.label}}</text>
+    </view>
+  </view>
+
+  <!-- 聊天列表 -->
+  <view class="chat-section">
+    <text class="section-title">聊天</text>
+    <view class="chat-item" wx:for="{{chatList}}" wx:key="id" data-id="{{item.id}}" bindtap="onChatTap">
+      <view class="chat-avatar-wrap">
+        <image class="chat-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+        <view class="chat-badge" wx:if="{{item.unread > 0}}">
+          <text class="chat-badge-num">{{item.unread}}</text>
+        </view>
+        <view class="group-tag" wx:if="{{item.isGroup}}">
+          <text class="group-tag-text">群</text>
+        </view>
+      </view>
+      <view class="chat-body">
+        <view class="chat-top-row">
+          <text class="chat-name">{{item.name}}</text>
+          <text class="chat-time">{{item.time}}</text>
+        </view>
+        <text class="chat-msg">{{item.lastMsg}}</text>
+      </view>
+    </view>
+  </view>
+</view>

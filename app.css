@@ -1,0 +1,86 @@
+/* ===== 互动剧本小程序 - 全局样式（暖色调浅色风）===== */
+
+.wx-page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  height: 100%;
+  background-color: #FFF8F3;
+  color: #3D2C29;
+}
+
+/* 重置样式 */
+view, text, scroll-view, swiper, swiper-item {
+  box-sizing: border-box;
+}
+
+/* ===== 品牌渐变 ===== */
+.orange-gradient {
+  background: linear-gradient(135deg, #F97316, #EC4899);
+}
+.pink-gradient {
+  background: linear-gradient(135deg, #EC4899, #F43F5E);
+}
+.warm-gradient {
+  background: linear-gradient(135deg, #F97316 0%, #EC4899 50%, #F43F5E 100%);
+}
+
+/* ===== 胶囊按钮 ===== */
+.btn-capsule-orange {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--rpx) * 12) calc(var(--rpx) * 36);
+  border-radius: calc(var(--rpx) * 50);
+  background: linear-gradient(135deg, #F97316, #EC4899);
+  color: #fff;
+  font-size: calc(var(--rpx) * 26);
+  font-weight: 600;
+  box-shadow: 0 calc(var(--rpx) * 4) calc(var(--rpx) * 16) rgba(249, 115, 22, 0.35);
+  border: none;
+}
+
+/* ===== 标签 ===== */
+.tag-orange {
+  display: inline-flex;
+  align-items: center;
+  padding: calc(var(--rpx) * 6) calc(var(--rpx) * 20);
+  border-radius: calc(var(--rpx) * 30);
+  background: linear-gradient(135deg, #F97316, #EC4899);
+  color: #fff;
+  font-size: calc(var(--rpx) * 22);
+  font-weight: 600;
+}
+
+.tag-pink {
+  display: inline-flex;
+  align-items: center;
+  padding: calc(var(--rpx) * 6) calc(var(--rpx) * 20);
+  border-radius: calc(var(--rpx) * 30);
+  background: linear-gradient(135deg, #EC4899, #F43F5E);
+  color: #fff;
+  font-size: calc(var(--rpx) * 22);
+  font-weight: 600;
+}
+
+/* ===== 动画 ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(calc(var(--rpx) * 30)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.anim-fade-in-up {
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+.anim-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* 悬浮TabBar底部安全区占位 - 各Tab页最外层容器需加 padding-bottom */
+/* TabBar高度calc(var(--rpx) * 96) + 安全区 + 余量，预留calc(var(--rpx) * 160)确保内容在框上方 */
+.tab-page-safe {
+  padding-bottom: calc(calc(var(--rpx) * 160) + env(safe-area-inset-bottom));
+}

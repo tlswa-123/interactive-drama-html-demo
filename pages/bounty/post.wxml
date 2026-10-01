@@ -1,0 +1,62 @@
+<view class="post-form-page">
+  <!-- 顶部返回栏 -->
+  <view class="form-header" style="padding-top:{{statusBarHeight + 10}}px">
+    <view class="back-btn" bindtap="onGoBack">
+      <text class="back-arrow">←</text>
+    </view>
+    <text class="form-header-title">发布悬赏</text>
+    <view class="header-placeholder"></view>
+  </view>
+
+  <scroll-view scroll-y class="form-scroll">
+    <!-- 类型选择 -->
+    <view class="form-group">
+      <text class="form-label">悬赏类型</text>
+      <picker mode="selector" range="{{types}}" value="{{typeIndex}}" bindchange="onTypeChange">
+        <view class="form-picker">
+          <text>{{types[typeIndex]}}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 关联游戏 -->
+    <view class="form-group">
+      <text class="form-label">关联游戏（选填）</text>
+      <picker mode="selector" range="{{games}}" value="{{gameIndex}}" bindchange="onGameChange">
+        <view class="form-picker">
+          <text>{{games[gameIndex]}}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 标题 -->
+    <view class="form-group">
+      <text class="form-label">标题</text>
+      <input class="form-input" placeholder="简要描述你的需求" value="{{title}}" bindinput="onTitleInput"/>
+    </view>
+
+    <!-- 需求描述 -->
+    <view class="form-group">
+      <text class="form-label">需求描述</text>
+      <textarea class="form-textarea" placeholder="详细描述你的需求，越具体越好..." value="{{description}}" bindinput="onDescInput" maxlength="2000"/>
+    </view>
+
+    <!-- 预算 -->
+    <view class="form-group">
+      <text class="form-label">悬赏预算（积分）</text>
+      <input class="form-input" type="number" placeholder="请输入预算金额" value="{{budget}}" bindinput="onBudgetInput"/>
+    </view>
+
+    <!-- 占位 -->
+    <view style="height:160rpx;"></view>
+  </scroll-view>
+
+  <!-- 底部发布按钮 -->
+  <view class="form-bottom-bar">
+    <view class="publish-btn" bindtap="onPublish">
+      <text>发布悬赏</text>
+    </view>
+  </view>
+</view>

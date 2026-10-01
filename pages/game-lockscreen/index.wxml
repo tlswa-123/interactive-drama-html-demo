@@ -1,0 +1,152 @@
+<view class="screen">
+
+  <!-- ========== 锁屏页面 ========== -->
+  <view class="lockscreen {{screen === 'lock' ? 'active' : ''}}" bindtap="onLockTap">
+    <!-- 壁纸背景 -->
+    <view class="wallpaper"></view>
+
+    <!-- 状态栏 -->
+    <view class="status-bar">
+      <text class="status-time">{{statusTime}}</text>
+      <view class="status-right">
+        <text class="status-signal">●●●●○</text>
+        <text class="status-wifi">⚡</text>
+        <text class="status-battery">{{battery}}%</text>
+      </view>
+    </view>
+
+    <!-- 时间显示 -->
+    <view class="lock-time-area">
+      <text class="lock-time">{{lockTime}}</text>
+      <text class="lock-date">{{lockDate}}</text>
+    </view>
+
+    <!-- 底部上滑提示 -->
+    <view class="swipe-hint">
+      <view class="swipe-line"></view>
+    </view>
+  </view>
+
+  <!-- ========== 密码输入页面 ========== -->
+  <view class="passcode-screen {{screen === 'passcode' ? 'active' : ''}}">
+    <view class="wallpaper wallpaper-blur"></view>
+
+    <!-- 状态栏 -->
+    <view class="status-bar">
+      <text class="status-time">{{statusTime}}</text>
+      <view class="status-right">
+        <text class="status-signal">●●●●○</text>
+        <text class="status-wifi">⚡</text>
+        <text class="status-battery">{{battery}}%</text>
+      </view>
+    </view>
+
+    <view class="passcode-content">
+      <!-- 密码圆点 -->
+      <text class="passcode-title">输入密码</text>
+      <view class="dots {{shaking ? 'shake' : ''}}">
+        <view class="dot {{inputLen >= 1 ? 'filled' : ''}}"></view>
+        <view class="dot {{inputLen >= 2 ? 'filled' : ''}}"></view>
+        <view class="dot {{inputLen >= 3 ? 'filled' : ''}}"></view>
+        <view class="dot {{inputLen >= 4 ? 'filled' : ''}}"></view>
+      </view>
+
+      <!-- 数字键盘 -->
+      <view class="keypad">
+        <view class="key-row">
+          <view class="key" bindtap="pressKey" data-num="1">
+            <text class="key-num">1</text>
+          </view>
+          <view class="key" bindtap="pressKey" data-num="2">
+            <text class="key-num">2</text>
+            <text class="key-sub">ABC</text>
+          </view>
+          <view class="key" bindtap="pressKey" data-num="3">
+            <text class="key-num">3</text>
+            <text class="key-sub">DEF</text>
+          </view>
+        </view>
+        <view class="key-row">
+          <view class="key" bindtap="pressKey" data-num="4">
+            <text class="key-num">4</text>
+            <text class="key-sub">GHI</text>
+          </view>
+          <view class="key" bindtap="pressKey" data-num="5">
+            <text class="key-num">5</text>
+            <text class="key-sub">JKL</text>
+          </view>
+          <view class="key" bindtap="pressKey" data-num="6">
+            <text class="key-num">6</text>
+            <text class="key-sub">MNO</text>
+          </view>
+        </view>
+        <view class="key-row">
+          <view class="key" bindtap="pressKey" data-num="7">
+            <text class="key-num">7</text>
+            <text class="key-sub">PQRS</text>
+          </view>
+          <view class="key" bindtap="pressKey" data-num="8">
+            <text class="key-num">8</text>
+            <text class="key-sub">TUV</text>
+          </view>
+          <view class="key" bindtap="pressKey" data-num="9">
+            <text class="key-num">9</text>
+            <text class="key-sub">WXYZ</text>
+          </view>
+        </view>
+        <view class="key-row">
+          <view class="key key-empty"></view>
+          <view class="key" bindtap="pressKey" data-num="0">
+            <text class="key-num">0</text>
+          </view>
+          <view class="key key-delete" bindtap="deleteKey">
+            <text class="key-num">⌫</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 取消按钮 -->
+      <view class="cancel-btn" bindtap="cancelPasscode">
+        <text>取消</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== 主屏幕（解锁后） ========== -->
+  <view class="homescreen {{screen === 'home' ? 'active' : ''}}">
+    <view class="home-wallpaper"></view>
+
+    <!-- 状态栏 -->
+    <view class="status-bar dark">
+      <text class="status-time">{{statusTime}}</text>
+      <view class="status-right">
+        <text class="status-signal">●●●●○</text>
+        <text class="status-wifi">⚡</text>
+        <text class="status-battery">{{battery}}%</text>
+      </view>
+    </view>
+
+    <!-- App 图标网格 -->
+    <view class="app-grid">
+      <view class="app-icon" wx:for="{{apps}}" wx:key="name">
+        <view class="icon-img" style="background:{{item.color}}">
+          <text class="icon-emoji">{{item.icon}}</text>
+        </view>
+        <text class="icon-label">{{item.name}}</text>
+      </view>
+    </view>
+
+    <!-- 底部 Dock -->
+    <view class="dock">
+      <view class="dock-icon" wx:for="{{dockApps}}" wx:key="name">
+        <view class="icon-img" style="background:{{item.color}}">
+          <text class="icon-emoji">{{item.icon}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部横线 -->
+    <view class="home-indicator"></view>
+  </view>
+
+</view>

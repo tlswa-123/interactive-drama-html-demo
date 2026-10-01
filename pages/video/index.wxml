@@ -1,0 +1,387 @@
+<!-- 互动视频/游戏页面 - 统一布局：上方内容 + 下方UI栏 -->
+<view class="page-container">
+
+  <swiper class="video-swiper" vertical="{{true}}" duration="{{250}}" current="{{currentIndex}}" bindchange="onSwiperChange">
+
+    <swiper-item wx:for="{{storyList}}" wx:key="id" class="swiper-item">
+      <view class="item-layout">
+
+          <!-- 游戏类型 -->
+          <block wx:if="{{item.type==='game'}}">
+            <!-- 锁屏游戏：内嵌三态交互 -->
+            <block wx:if="{{item.gameType==='lockscreen'}}">
+              <view class="content-area ls-content">
+                <view class="ls-wallpaper {{lockScreenState==='home'?'ls-wallpaper-home':''}}"></view>
+                <view class="ls-wallpaper-blur" wx:if="{{lockScreenState==='passcode'}}"></view>
+
+                <view class="ls-status-bar {{lockScreenState==='home'?'dark':''}}">
+                  <text class="ls-st">{{lockScreenTime}}</text>
+                  <view class="ls-sr">
+                    <text class="ls-sig">●●●●○</text>
+                    <text class="ls-wf">⚡</text>
+                    <text class="ls-bat">{{lockBattery}}%</text>
+                  </view>
+                </view>
+
+                <view class="ls-page ls-lock {{lockScreenState==='lock'?'ls-active':''}}" catchtap="onLockTap">
+                  <view class="ls-time-wrap">
+                    <text class="ls-big-time">{{lockTime}}</text>
+                    <text class="ls-big-date">{{lockDate}}</text>
+                  </view>
+                  <view class="ls-swipe"><view class="ls-swipe-line"></view></view>
+                </view>
+
+                <view class="ls-page ls-passcode {{lockScreenState==='passcode'?'ls-active':''}}">
+                  <view class="ls-pc-box">
+                    <text class="ls-pc-title">输入密码</text>
+                    <view class="ls-dots {{lockShaking?'ls-shake':''}}">
+                      <view class="ls-dot {{lockInputLen>=1?'ls-filled':''}}"></view>
+                      <view class="ls-dot {{lockInputLen>=2?'ls-filled':''}}"></view>
+                      <view class="ls-dot {{lockInputLen>=3?'ls-filled':''}}"></view>
+                      <view class="ls-dot {{lockInputLen>=4?'ls-filled':''}}"></view>
+                    </view>
+                    <view class="ls-keypad">
+                      <view class="ls-krow">
+                        <view class="ls-key" catchtap="pressKey" data-num="1"><text class="ls-kn">1</text></view>
+                        <view class="ls-key" catchtap="pressKey" data-num="2"><text class="ls-kn">2</text><text class="ls-ks">ABC</text></view>
+                        <view class="ls-key" catchtap="pressKey" data-num="3"><text class="ls-kn">3</text><text class="ls-ks">DEF</text></view>
+                      </view>
+                      <view class="ls-krow">
+                        <view class="ls-key" catchtap="pressKey" data-num="4"><text class="ls-kn">4</text><text class="ls-ks">GHI</text></view>
+                        <view class="ls-key" catchtap="pressKey" data-num="5"><text class="ls-kn">5</text><text class="ls-ks">JKL</text></view>
+                        <view class="ls-key" catchtap="pressKey" data-num="6"><text class="ls-kn">6</text><text class="ls-ks">MNO</text></view>
+                      </view>
+                      <view class="ls-krow">
+                        <view class="ls-key" catchtap="pressKey" data-num="7"><text class="ls-kn">7</text><text class="ls-ks">PQRS</text></view>
+                        <view class="ls-key" catchtap="pressKey" data-num="8"><text class="ls-kn">8</text><text class="ls-ks">TUV</text></view>
+                        <view class="ls-key" catchtap="pressKey" data-num="9"><text class="ls-kn">9</text><text class="ls-ks">WXYZ</text></view>
+                      </view>
+                      <view class="ls-krow">
+                        <view class="ls-key ls-key-empty"></view>
+                        <view class="ls-key" catchtap="pressKey" data-num="0"><text class="ls-kn">0</text></view>
+                        <view class="ls-key ls-key-del" catchtap="deleteKey"><text class="ls-kn">⌫</text></view>
+                      </view>
+                    </view>
+                    <view class="ls-cancel" catchtap="cancelPasscode"><text>取消</text></view>
+                  </view>
+                </view>
+
+                <view class="ls-page ls-home {{lockScreenState==='home'?'ls-active':''}}">
+                  <view class="ls-grid">
+                    <view class="ls-app" wx:for="{{lockApps}}" wx:key="name">
+                      <view class="ls-app-icon" style="background:{{item.color}}"><text class="ls-app-emoji">{{item.icon}}</text></view>
+                      <text class="ls-app-name">{{item.name}}</text>
+                    </view>
+                  </view>
+                  <view class="ls-dock">
+                    <view class="ls-dock-item" wx:for="{{lockDockApps}}" wx:key="name">
+                      <view class="ls-app-icon" style="background:{{item.color}}"><text class="ls-app-emoji">{{item.icon}}</text></view>
+                    </view>
+                  </view>
+                  <view class="ls-indicator"></view>
+                </view>
+              </view>
+            </block>
+            <!-- 内嵌canvas游戏 -->
+            <block wx:else>
+              <!-- 顶部功能栏（独立横条，和底部UI同风格） -->
+              <view class="game-top-ui" style="padding-top:{{statusBarHeight + 10}}px" wx:if="{{currentIndex===index && !gameUIHidden}}">
+                <view class="top-ui-btn" catchtap="onGameRank">
+                  <image class="top-ui-icon" src="/assets/icons/rank-warm.png" mode="aspectFit"/>
+                  <text class="top-ui-text">排行</text>
+                </view>
+                <view class="top-ui-btn" catchtap="onGameTrophy">
+                  <image class="top-ui-icon" src="/assets/icons/trophy-warm.png" mode="aspectFit"/>
+                  <text class="top-ui-text">成就</text>
+                </view>
+                <view class="top-ui-btn" catchtap="onGameRoute">
+                  <image class="top-ui-icon" src="/assets/icons/fork-warm.png" mode="aspectFit"/>
+                  <text class="top-ui-text">共创</text>
+                </view>
+              </view>
+              <!-- 游戏canvas -->
+              <view class="content-area" style="background:{{item.gameType==='papercut'?'#F5E6D0':'#0a0a1a'}}">
+                <canvas type="2d" id="canvas_{{item.id}}" class="content-fill"
+                  catchtouchstart="onGameTS" catchtouchmove="onGameTM" catchtouchend="onGameTE">
+                </canvas>
+                <!-- 剪纸游戏操作按钮 -->
+                <cover-view class="game-action-bar" wx:if="{{item.gameType==='papercut' && currentIndex===index && !gameUIHidden}}">
+                  <cover-view class="game-btn" wx:if="{{papercutPhase==='show'}}" catchtap="onPapercutAction" data-action="fold">开始折纸</cover-view>
+                  <cover-view class="game-btn" wx:if="{{papercutPhase==='ready'}}" catchtap="onPapercutAction" data-action="cut">开始剪纸</cover-view>
+                  <cover-view class="game-btn-sm" wx:if="{{papercutPhase==='cut'}}" catchtap="onPapercutAction" data-action="undo">撤销</cover-view>
+                  <cover-view class="game-btn-sm" wx:if="{{papercutPhase==='cut'}}" catchtap="onPapercutAction" data-action="clear">清空</cover-view>
+                  <cover-view class="game-btn" wx:if="{{papercutPhase==='cut'}}" catchtap="onPapercutAction" data-action="unfold">展开</cover-view>
+                  <cover-view class="game-btn-sm" wx:if="{{papercutPhase==='result'}}" catchtap="onPapercutAction" data-action="restart">再来</cover-view>
+                  <cover-view class="game-btn" wx:if="{{papercutPhase==='result'}}" catchtap="onPapercutAction" data-action="save">保存</cover-view>
+                </cover-view>
+              </view>
+            </block>
+          </block>
+
+          <!-- 视频类型 -->
+          <block wx:else>
+            <view class="content-area">
+            <block wx:if="{{index >= currentIndex-1 && index <= currentIndex+1}}">
+              <video id="{{item._vid}}" class="content-fill"
+                src="{{item.src}}" poster="{{item.poster}}" autoplay="{{currentIndex===index}}"
+                controls="{{false}}" loop="{{false}}" object-fit="cover"
+                show-fullscreen-btn="{{false}}" show-play-btn="{{false}}"
+                show-center-play-btn="{{false}}" enable-progress-gesture="{{false}}"
+                show-progress="{{false}}" direction="{{0}}"
+                bindended="onEnded" bindtimeupdate="onTimeUpdate" bindplay="onPlay"
+                muted="{{false}}" bindtap="onVideoTap">
+              </video>
+            </block>
+            <block wx:else>
+              <image class="content-fill" src="{{item.poster}}" mode="aspectFill"/>
+            </block>
+
+            <!-- 暂停图标 -->
+            <view class="pause-overlay" wx:if="{{currentIndex===index && item._paused}}" bindtap="onVideoTap">
+              <view class="pause-icon-circle"><view class="pause-bar"></view><view class="pause-bar"></view></view>
+            </view>
+
+            <!-- 视频顶部按钮 -->
+            <view class="top-bar" wx:if="{{currentIndex===index}}">
+              <text class="ending-label" wx:if="{{item.state==='ending'&&item.endText}}">{{item.endText}}</text>
+              <view class="top-actions">
+                <view class="top-btn" wx:if="{{item.state==='ending'}}" bindtap="restart">
+                  <image class="btn-icon" src="/assets/icons/restart-warm.png" mode="aspectFit"/> 重选
+                </view>
+                <view class="top-btn tree-btn" bindtap="onToggleTree">
+                  <image class="btn-icon" src="/assets/icons/branch-warm.png" mode="aspectFit"/> 支线
+                </view>
+              </view>
+            </view>
+
+            <!-- 选项面板 -->
+            <view class="choice-panel" wx:if="{{item.showChoice&&currentIndex===index&&!item.showTree}}" catchtap>
+              <text class="choice-hint">你的选择将决定故事走向</text>
+              <view class="choice-list">
+                <view class="choice-card choice-card-{{cIdx}}"
+                  wx:for="{{item.actChoices}}" wx:key="id" wx:for-item="choice" wx:for-index="cIdx"
+                  data-choiceid="{{choice.id}}" catchtap="onChoiceTap">
+                  <view class="choice-letter">{{choice.letter}}</view>
+                  <text class="choice-text">{{choice.text}}</text>
+                </view>
+              </view>
+            </view>
+
+            <!-- 黑屏结局 -->
+            <view class="black-screen" wx:if="{{item.state==='ending'&&item.blackScreen&&currentIndex===index}}">
+              <text class="black-screen-text">{{item.endText}}</text>
+            </view>
+
+            <!-- 隐藏线索 -->
+            <cover-view wx:if="{{currentIndex===index&&item.state==='start'&&item.clues.length>0&&_clueShow_c1}}"
+              style="position:absolute;left:20%;top:30%;width:120rpx;height:120rpx;" data-clueid="c1" catchtap="onClueTap">
+              <cover-view style="font-size:56rpx;">💎</cover-view>
+            </cover-view>
+            <cover-view wx:if="{{currentIndex===index&&item.state==='start'&&item.clues.length>0&&_clueShow_c2}}"
+              style="position:absolute;left:70%;top:60%;width:120rpx;height:120rpx;" data-clueid="c2" catchtap="onClueTap">
+              <cover-view style="font-size:56rpx;">🔮</cover-view>
+            </cover-view>
+
+            <!-- 故事支线树状图 -->
+            <view class="tree-overlay" wx:if="{{item.showTree&&currentIndex===index}}" catchtap="onCloseTree">
+              <view class="tree-backdrop"></view>
+              <view class="tree-content" catchtap>
+                <view class="tree-header">
+                  <text class="tree-title"><image class="tree-title-icon" src="/assets/icons/branch.png" mode="aspectFit"/> 故事支线</text>
+                  <text class="tree-close" catchtap="onCloseTree">✕</text>
+                </view>
+                <text class="tree-story-name">{{item.title}}</text>
+                <view class="tree-canvas">
+                  <view class="t-node t-root"><view class="t-dot t-dot-gold"></view><text class="t-label">起始剧情</text></view>
+                  <view class="t-vline"></view>
+                  <view class="t-fork"><view class="t-fork-h"></view><view class="t-fork-left-line"></view><view class="t-fork-right-line"></view></view>
+                  <view class="t-branch-col-area">
+                    <view class="t-branch-side t-left" wx:if="{{item.choices.length>=1}}">
+                      <view class="t-vline-short"></view>
+                      <view class="t-option-card {{item._unlocks[item.choices[0].nextId]?'opt-unlocked':'opt-locked'}}" data-nextid="{{item.choices[0].nextId}}" catchtap="onBranchTap">
+                        <text class="opt-tag">{{item._unlocks[item.choices[0].nextId]?'A':'?'}}</text>
+                        <text class="opt-name">{{item.choices[0].text}}</text>
+                        <text class="opt-result" wx:if="{{item._unlocks[item.choices[0].nextId]}}">{{item._shorts[item.choices[0].nextId]||'已解锁'}}</text>
+                        <text class="opt-result opt-hidden" wx:else>???</text>
+                      </view>
+                    </view>
+                    <view class="t-branch-side t-right" wx:if="{{item.choices.length>=2}}">
+                      <view class="t-vline-short"></view>
+                      <view class="t-option-card {{item._unlocks[item.choices[1].nextId]?'opt-unlocked':'opt-locked'}}" data-nextid="{{item.choices[1].nextId}}" catchtap="onBranchTap">
+                        <text class="opt-tag">{{item._unlocks[item.choices[1].nextId]?'B':'?'}}</text>
+                        <text class="opt-name">{{item.choices[1].text}}</text>
+                        <text class="opt-result" wx:if="{{item._unlocks[item.choices[1].nextId]}}">{{item._shorts[item.choices[1].nextId]||'已解锁'}}</text>
+                        <text class="opt-result opt-hidden" wx:else>???</text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+                <view class="tree-progress">
+                  <text class="progress-text">已解锁 {{item._cnt||0}}/{{item.choices.length}} 个结局</text>
+                </view>
+              </view>
+            </view>
+            </view>
+          </block>
+
+        <!-- ===== 底部统一UI栏（视频和游戏共用） ===== -->
+        <view class="bottom-ui" wx:if="{{currentIndex===index && !gameUIHidden}}">
+          <view class="bottom-info">
+            <text class="bottom-author">@{{item.author}}</text>
+            <text class="bottom-title">{{item.title}}</text>
+          </view>
+          <view class="bottom-actions">
+            <view class="bot-act" bindtap="onLikeTap">
+              <image wx:if="{{liked[item.id]}}" class="bot-act-img" src="/assets/icons/heart-filled.png" mode="aspectFit"/>
+              <image wx:else class="bot-act-img" src="/assets/icons/heart-outline-warm.png" mode="aspectFit"/>
+              <text class="bot-act-num">{{item.likes||0}}</text>
+            </view>
+            <view class="bot-act" bindtap="onCommentTap">
+              <image class="bot-act-img" src="/assets/icons/comment-warm.png" mode="aspectFit"/>
+              <text class="bot-act-num">{{item.comments||0}}</text>
+            </view>
+            <view class="bot-act" bindtap="onCollectTap">
+              <image wx:if="{{collected[item.id]}}" class="bot-act-img" src="/assets/icons/bookmark-filled.png" mode="aspectFit"/>
+              <image wx:else class="bot-act-img" src="/assets/icons/bookmark-warm.png" mode="aspectFit"/>
+              <text class="bot-act-num">收藏</text>
+            </view>
+            <view class="bot-act" bindtap="onShareTap">
+              <image class="bot-act-img" src="/assets/icons/share-warm.png" mode="aspectFit"/>
+              <text class="bot-act-num">分享</text>
+            </view>
+            <view class="bot-act" bindtap="onFeedbackTap">
+              <image class="bot-act-img" src="/assets/icons/feedback-warm.png" mode="aspectFit"/>
+              <text class="bot-act-num">意见</text>
+            </view>
+            <view class="bot-act" wx:if="{{item.type==='game'}}" catchtap="onToggleGameUI">
+              <text class="bot-act-num">▼</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 收起状态展开按钮（仅游戏） -->
+        <view class="expand-btn" wx:if="{{item.type==='game' && currentIndex===index && gameUIHidden}}" catchtap="onToggleGameUI">
+          <text class="expand-text">▲</text>
+        </view>
+
+      </view><!-- end item-layout -->
+    </swiper-item>
+  </swiper>
+
+  <!-- 进度条（仅视频时显示） -->
+  <view class="progress-bar-wrap" wx:if="{{storyList[currentIndex].type!=='game'}}" catchtouchmove="onProgressDrag" catchtouchstart="onProgressTouchStart" catchtouchend="onProgressTouchEnd">
+    <view class="progress-bar-bg">
+      <view class="progress-bar-fill" style="width:{{progressPercent || 0}}%"></view>
+    </view>
+  </view>
+
+  <!-- 评论弹窗 -->
+  <view class="comment-overlay" wx:if="{{showCommentPanel}}" catchtap="onCloseComments">
+    <view class="comment-panel" catchtap>
+      <view class="comment-panel-header">
+        <text class="comment-panel-title">评论 {{currentComments.length}}</text>
+        <text class="comment-panel-close" catchtap="onCloseComments">✕</text>
+      </view>
+      <scroll-view scroll-y class="comment-panel-scroll">
+        <view class="cp-comment-item" wx:for="{{currentComments}}" wx:key="id">
+          <image class="cp-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+          <view class="cp-body">
+            <view class="cp-header">
+              <text class="cp-user">{{item.user}}</text>
+              <text class="cp-time">{{item.time}}</text>
+            </view>
+            <text class="cp-text">{{item.text}}</text>
+            <view class="cp-actions">
+              <image class="cp-like-icon" src="/assets/icons/heart-outline.png" mode="aspectFit"/>
+              <text class="cp-like-count">{{item.likes}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="cp-no-more"><text>— 没有更多评论了 —</text></view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 提意见弹窗 -->
+  <view class="feedback-overlay" wx:if="{{showFeedbackPanel}}" catchtap="onCloseFeedback">
+    <view class="feedback-panel" catchtap>
+      <view class="feedback-header">
+        <text class="feedback-title">💬 提意见</text>
+        <text class="feedback-close" catchtap="onCloseFeedback">✕</text>
+      </view>
+      <view class="feedback-types">
+        <view class="fb-type {{feedbackType==='bug'?'active':''}}" data-type="bug" bindtap="onFeedbackTypeTap">🐛 Bug</view>
+        <view class="fb-type {{feedbackType==='suggest'?'active':''}}" data-type="suggest" bindtap="onFeedbackTypeTap">💡 建议</view>
+        <view class="fb-type {{feedbackType==='content'?'active':''}}" data-type="content" bindtap="onFeedbackTypeTap">📝 内容</view>
+      </view>
+      <textarea class="feedback-textarea" placeholder="请描述你遇到的问题或建议..." value="{{feedbackText}}" bindinput="onFeedbackInput" maxlength="300"/>
+      <view class="feedback-submit" bindtap="onSubmitFeedback">
+        <text>提交反馈</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 排行榜弹窗 -->
+  <view class="rank-overlay" wx:if="{{showRankPanel}}" catchtap="onCloseRank">
+    <view class="rank-panel" catchtap="">
+      <view class="rank-header">
+        <text class="rank-title">🏆 {{panelGameTitle}}</text>
+        <text class="rank-close" catchtap="onCloseRank">✕</text>
+      </view>
+      <!-- 前三名特殊展示 -->
+      <view class="rank-podium">
+        <view class="podium-item podium-2" wx:if="{{currentRankList[1]}}">
+          <image class="podium-avatar" src="{{currentRankList[1].avatar}}" mode="aspectFill"/>
+          <text class="podium-name">{{currentRankList[1].name}}</text>
+          <text class="podium-score">{{currentRankList[1].score}}</text>
+          <text class="podium-tag">{{currentRankList[1].tag}}</text>
+        </view>
+        <view class="podium-item podium-1" wx:if="{{currentRankList[0]}}">
+          <image class="podium-avatar" src="{{currentRankList[0].avatar}}" mode="aspectFill"/>
+          <text class="podium-name">{{currentRankList[0].name}}</text>
+          <text class="podium-score">{{currentRankList[0].score}}</text>
+          <text class="podium-tag">{{currentRankList[0].tag}}</text>
+        </view>
+        <view class="podium-item podium-3" wx:if="{{currentRankList[2]}}">
+          <image class="podium-avatar" src="{{currentRankList[2].avatar}}" mode="aspectFill"/>
+          <text class="podium-name">{{currentRankList[2].name}}</text>
+          <text class="podium-score">{{currentRankList[2].score}}</text>
+          <text class="podium-tag">{{currentRankList[2].tag}}</text>
+        </view>
+      </view>
+      <!-- 4-10名列表 -->
+      <scroll-view scroll-y class="rank-list-scroll">
+        <view class="rank-item" wx:for="{{currentRankList}}" wx:key="rank" wx:if="{{item.rank > 3}}">
+          <text class="rank-num">{{item.rank}}</text>
+          <image class="rank-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+          <text class="rank-name">{{item.name}}</text>
+          <text class="rank-score">{{item.score}}</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 成就弹窗 -->
+  <view class="achieve-overlay" wx:if="{{showAchievePanel}}" catchtap="onCloseAchieve">
+    <view class="achieve-panel" catchtap="">
+      <view class="achieve-header">
+        <text class="achieve-title">🎖️ {{panelGameTitle}}</text>
+        <text class="achieve-close" catchtap="onCloseAchieve">✕</text>
+      </view>
+      <scroll-view scroll-y class="achieve-list-scroll">
+        <view class="achieve-item {{item.unlocked ? 'unlocked' : 'locked'}}" wx:for="{{currentAchieveList}}" wx:key="name">
+          <text class="achieve-icon {{item.unlocked ? '' : 'gray'}}">{{item.icon}}</text>
+          <view class="achieve-info">
+            <text class="achieve-name {{item.unlocked ? '' : 'gray'}}">{{item.name}}</text>
+            <text class="achieve-desc">{{item.desc}}</text>
+          </view>
+          <text class="achieve-status">{{item.unlocked ? '✅' : '🔒'}}</text>
+        </view>
+      </scroll-view>
+      <view class="achieve-footer">
+        <text>已解锁 {{achieveUnlockedCount}}/{{achieveTotalCount}}</text>
+      </view>
+    </view>
+  </view>
+
+</view>

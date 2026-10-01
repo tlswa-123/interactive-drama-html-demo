@@ -1,0 +1,280 @@
+.bounty-detail-page {
+  min-height: 100vh;
+  background: #FFF8F3;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 顶部返回栏 ===== */
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24rpx 16rpx;
+  background: #fff;
+  border-bottom: 1rpx solid rgba(0,0,0,0.05);
+}
+
+.back-btn {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-arrow {
+  font-size: 36rpx;
+  color: #3D2C29;
+}
+
+.detail-header-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #3D2C29;
+}
+
+.header-placeholder {
+  width: 64rpx;
+}
+
+/* ===== 滚动内容区 ===== */
+.detail-scroll {
+  flex: 1;
+  height: 0;
+}
+
+/* ===== 预算卡片 ===== */
+.bounty-budget-card {
+  background: #FFF5EB;
+  padding: 32rpx 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1rpx solid rgba(201, 149, 122, 0.15);
+}
+
+.bounty-budget-amount {
+  font-size: 40rpx;
+  color: #8B7355;
+  font-weight: 700;
+}
+
+.bounty-bounty-status {
+  font-size: 22rpx;
+  font-weight: 600;
+  padding: 6rpx 16rpx;
+  border-radius: 16rpx;
+}
+
+/* ===== 标题 & 标签 ===== */
+.bounty-info-section {
+  background: #fff;
+  padding: 24rpx;
+  border-bottom: 1rpx solid rgba(0,0,0,0.05);
+}
+
+.bounty-detail-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #3D2C29;
+  line-height: 1.4;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.bounty-info-tags {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.bounty-info-type {
+  font-size: 22rpx;
+  color: #8B7355;
+  background: rgba(139, 115, 85, 0.08);
+  padding: 6rpx 16rpx;
+  border-radius: 12rpx;
+}
+
+.bounty-info-deadline {
+  font-size: 22rpx;
+  color: #C9957A;
+}
+
+/* ===== 发布者 ===== */
+.bounty-publisher {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 20rpx 24rpx;
+  background: #fff;
+  border-bottom: 1rpx solid rgba(0,0,0,0.05);
+}
+
+.bounty-publisher-avatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(249,115,22,0.15);
+}
+
+.bounty-publisher-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.bounty-publisher-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #3D2C29;
+}
+
+.bounty-publisher-time {
+  font-size: 22rpx;
+  color: #C9957A;
+}
+
+/* ===== 需求描述 ===== */
+.bounty-desc-section {
+  background: #fff;
+  padding: 24rpx;
+  margin-top: 16rpx;
+}
+
+.section-label {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #3D2C29;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.bounty-desc-text {
+  font-size: 28rpx;
+  color: #3D2C29;
+  line-height: 1.6;
+  display: block;
+}
+
+/* ===== 投稿列表 ===== */
+.submissions-section {
+  background: #fff;
+  padding: 24rpx;
+  margin-top: 16rpx;
+}
+
+.submissions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle-icon {
+  font-size: 24rpx;
+  color: #8B7355;
+}
+
+.submissions-list {
+  margin-top: 16rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.submission-item {
+  background: #FFF8F3;
+  border-radius: 16rpx;
+  padding: 20rpx;
+}
+
+.submission-top {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.submission-avatar {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+}
+
+.submission-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rpx;
+}
+
+.submission-author {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #3D2C29;
+}
+
+.submission-time {
+  font-size: 20rpx;
+  color: #C9957A;
+}
+
+.submission-status {
+  font-size: 20rpx;
+  font-weight: 600;
+  padding: 4rpx 12rpx;
+  border-radius: 10rpx;
+}
+
+.submission-status.accepted {
+  color: #8B7355;
+  background: rgba(139, 115, 85, 0.1);
+}
+
+.submission-status.rejected {
+  color: #C9957A;
+  background: rgba(201, 149, 122, 0.1);
+}
+
+.submission-status.pending {
+  color: #8B7355;
+  background: rgba(139, 115, 85, 0.1);
+}
+
+.submission-content {
+  font-size: 26rpx;
+  color: #3D2C29;
+  line-height: 1.5;
+}
+
+.empty-submissions {
+  text-align: center;
+  padding: 40rpx 0;
+  font-size: 26rpx;
+  color: #8B7355;
+}
+
+/* ===== 底部按钮 ===== */
+.bounty-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16rpx 24rpx 32rpx;
+  background: #fff;
+  border-top: 1rpx solid rgba(0,0,0,0.05);
+}
+
+.submit-work-btn {
+  background: linear-gradient(135deg, #FDBA74, #F9A8D4);
+  border-radius: 44rpx;
+  padding: 24rpx 0;
+  text-align: center;
+}
+
+.submit-work-btn text {
+  font-size: 32rpx;
+  color: #fff;
+  font-weight: 700;
+}

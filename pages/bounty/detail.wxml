@@ -1,0 +1,68 @@
+<view class="bounty-detail-page">
+  <!-- 悬赏内容区 -->
+  <scroll-view scroll-y class="detail-scroll" wx:if="{{bounty}}">
+    <!-- 预算卡片 -->
+    <view class="bounty-budget-card">
+      <text class="bounty-budget-amount">🪙 {{bounty.budget}} 金币</text>
+      <text class="bounty-bounty-status" style="color:{{bounty.statusColor}};background:{{bounty.statusColor}}15;">{{bounty.statusText}}</text>
+    </view>
+
+    <!-- 标题 & 标签 -->
+    <view class="bounty-info-section">
+      <text class="bounty-detail-title">{{bounty.title}}</text>
+      <view class="bounty-info-tags">
+        <text class="bounty-info-type">{{bounty.type}}</text>
+        <text class="bounty-info-deadline">⏰ {{bounty.deadline}}</text>
+      </view>
+    </view>
+
+    <!-- 发布者 -->
+    <view class="bounty-publisher">
+      <image class="bounty-publisher-avatar" src="{{bounty.avatar}}" mode="aspectFill"/>
+      <view class="bounty-publisher-info">
+        <text class="bounty-publisher-name">{{bounty.publisher}}</text>
+        <text class="bounty-publisher-time">{{bounty.createTime}} 发布</text>
+      </view>
+    </view>
+
+    <!-- 需求描述 -->
+    <view class="bounty-desc-section">
+      <text class="section-label">需求描述</text>
+      <text class="bounty-desc-text">{{bounty.description}}</text>
+    </view>
+
+    <!-- 投稿列表 -->
+    <view class="submissions-section">
+      <view class="submissions-header" bindtap="onToggleSubmissions">
+        <text class="section-label">已有投稿 ({{submissions.length}})</text>
+        <text class="toggle-icon">{{showSubmissions?'▼':'▶'}}</text>
+      </view>
+      <view class="submissions-list" wx:if="{{showSubmissions}}">
+        <view class="submission-item" wx:for="{{submissions}}" wx:key="id">
+          <view class="submission-top">
+            <image class="submission-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+            <view class="submission-info">
+              <text class="submission-author">{{item.submitter}}</text>
+              <text class="submission-time">{{item.createTime}}</text>
+            </view>
+            <text class="submission-status {{item.status}}">{{item.status==='accepted'?'已采纳':item.status==='rejected'?'未采纳':'待审核'}}</text>
+          </view>
+          <text class="submission-content">{{item.content}}</text>
+        </view>
+        <view class="empty-submissions" wx:if="{{submissions.length===0}}">
+          <text>暂时还没有投稿，快来抢沙发吧！</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部占位，给按钮留空间 -->
+    <view style="height:160rpx;"></view>
+  </scroll-view>
+
+  <!-- 底部按钮 -->
+  <view class="bounty-bottom-bar" wx:if="{{bounty && bounty.status==='open'}}">
+    <view class="submit-work-btn" bindtap="onSubmitWork">
+      <text>我要投稿</text>
+    </view>
+  </view>
+</view>
