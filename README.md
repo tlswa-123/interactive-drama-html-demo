@@ -4,7 +4,7 @@
 
 ## 预览
 
-直接打开仓库对应的 GitHub Pages 地址即可体验。要在本机预览，在仓库根目录运行 `node preview.cjs`，然后打开 [http://127.0.0.1:8767/](http://127.0.0.1:8767/)。浏览器端入口是 `index.html`。`preview.cjs` 仅用于本机预览，无需安装依赖。
+直接打开[线上演示](https://tlswa-123.github.io/interactive-drama-html-demo/)即可体验。要在本机预览，在仓库根目录运行 `node preview.cjs`，然后打开 [http://127.0.0.1:8767/](http://127.0.0.1:8767/)。浏览器端入口是 `index.html`。`preview.cjs` 仅用于本机预览，无需安装依赖。
 
 ## 部署
 
